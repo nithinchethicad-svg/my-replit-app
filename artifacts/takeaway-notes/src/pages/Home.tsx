@@ -1,7 +1,7 @@
 const IMG = (name: string) => `${import.meta.env.BASE_URL}images/${name}`;
 
-const Illus = ({ src, alt, h }: { src: string; alt: string; h: number }) => (
-  <div style={{ width: "100%", display: "flex", justifyContent: "center", margin: "14px 0" }}>
+const Illus = ({ src, alt, h, m = 14 }: { src: string; alt: string; h: number; m?: number }) => (
+  <div style={{ width: "100%", display: "flex", justifyContent: "center", margin: `${m}px 0` }}>
     <img src={src} alt={alt} style={{ maxHeight: h, maxWidth: "100%", objectFit: "contain", display: "block" }} />
   </div>
 );
@@ -232,9 +232,9 @@ export default function Home() {
             { t: "Treat Others with the Grace You'd Want", n: "Offer the same patience, kindness, and grace you would hope to receive if you were the one who had made a mistake." },
           ]} />
         </div>
-        <Illus src={IMG("forpage6.png")} alt="Guardian filters who goes in vs Guide leads everyone into church" h={210} />
-        <hr className="sub-divider" />
-        <Illus src={IMG("image85.png")} alt="Pride distances vs Humility brings closer" h={155} />
+        <Illus src={IMG("forpage6.png")} alt="Guardian filters who goes in vs Guide leads everyone into church" h={250} m={6} />
+        <div style={{ borderTop: "1px dashed #E8C87A", margin: "4px 0" }} />
+        <Illus src={IMG("image85.png")} alt="Pride distances vs Humility brings closer" h={185} m={6} />
         <PageFooter n={6} />
       </div>
 

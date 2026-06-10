@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Good News, Bad Approach — Takeaway Notes"
+version = "1.0.0"
+id = "artifacts/takeaway-notes"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 18537
+
+[services.development]
+run = "pnpm --filter @workspace/takeaway-notes run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/takeaway-notes", "run", "build" ]
+publicDir = "artifacts/takeaway-notes/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "18537"
+BASE_PATH = "/"

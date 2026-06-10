@@ -1,0 +1,404 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-border: hsl(var(--border));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --font-sans: var(--app-font-sans);
+  --font-serif: var(--app-font-serif);
+  --font-mono: var(--app-font-mono);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+}
+
+:root {
+  --background: 38 60% 95%;
+  --foreground: 20 60% 12%;
+  --border: 35 40% 75%;
+  --card: 40 55% 93%;
+  --card-foreground: 20 60% 12%;
+  --primary: 20 72% 48%;
+  --primary-foreground: 40 100% 97%;
+  --accent: 145 32% 32%;
+  --accent-foreground: 145 50% 95%;
+  --muted: 38 30% 88%;
+  --muted-foreground: 20 25% 42%;
+
+  --app-font-sans: 'Inter', sans-serif;
+  --app-font-serif: 'Playfair Display', Georgia, serif;
+  --app-font-mono: Menlo, monospace;
+  --radius: 0.5rem;
+
+  /* Document colors */
+  --cream: #FBF5E8;
+  --cream-dark: #F3E8C8;
+  --cream-card: #FAF0D8;
+  --brown-deep: #2C1A0F;
+  --brown-mid: #5C3A1E;
+  --brown-light: #8B6340;
+  --orange-accent: #D4622A;
+  --orange-light: #F2934A;
+  --green-dos: #2E6B47;
+  --green-dos-bg: #EBF5EF;
+  --green-dos-border: #A8D5B5;
+  --red-donts: #A63020;
+  --red-donts-bg: #FCEEE9;
+  --red-donts-border: #E8A898;
+  --gold: #C89B3C;
+  --gold-light: #E8C87A;
+  --verse-bg: #F5E9CC;
+  --verse-border: #C89B3C;
+  --section-header-bg: #3D2210;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: var(--app-font-sans);
+    background-color: #E8DCC8;
+    color: var(--brown-deep);
+    margin: 0;
+    padding: 0;
+  }
+}
+
+/* A4 Page Styles */
+.document-bg {
+  background-color: #E8DCC8;
+  background-image:
+    radial-gradient(ellipse at 20% 10%, rgba(212, 98, 42, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 90%, rgba(46, 107, 71, 0.05) 0%, transparent 50%);
+  min-height: 100vh;
+  padding: 3rem 1.5rem;
+}
+
+.a4-page {
+  width: 794px;
+  min-height: 1123px;
+  background-color: var(--cream);
+  margin: 0 auto 3rem auto;
+  padding: 56px 60px;
+  box-shadow: 0 4px 32px rgba(44, 26, 15, 0.18), 0 1px 6px rgba(44, 26, 15, 0.10);
+  position: relative;
+  overflow: hidden;
+  border-radius: 2px;
+}
+
+.a4-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--orange-accent), var(--gold), var(--orange-accent));
+}
+
+/* Page number badge */
+.page-badge {
+  position: absolute;
+  bottom: 28px;
+  right: 48px;
+  font-family: var(--app-font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--brown-light);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Page footer rule */
+.page-footer-rule {
+  position: absolute;
+  bottom: 50px;
+  left: 48px;
+  right: 48px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-light), transparent);
+}
+
+/* Typography */
+.display-title {
+  font-family: var(--app-font-serif);
+  font-size: 46px;
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--brown-deep);
+  letter-spacing: -0.02em;
+}
+
+.section-num {
+  font-family: var(--app-font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--orange-accent);
+}
+
+.section-title {
+  font-family: var(--app-font-serif);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--brown-deep);
+  line-height: 1.25;
+}
+
+.subsection-title {
+  font-family: var(--app-font-serif);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--brown-mid);
+  line-height: 1.3;
+  font-style: italic;
+}
+
+.body-text {
+  font-family: var(--app-font-sans);
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--brown-deep);
+}
+
+.small-text {
+  font-family: var(--app-font-sans);
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: var(--brown-mid);
+}
+
+/* Verse box */
+.verse-box {
+  background: var(--verse-bg);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 6px 6px 0;
+  padding: 12px 16px;
+  margin: 10px 0;
+}
+
+.verse-ref {
+  font-family: var(--app-font-sans);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brown-light);
+  margin-bottom: 4px;
+}
+
+.verse-text {
+  font-family: var(--app-font-serif);
+  font-size: 12px;
+  font-style: italic;
+  line-height: 1.65;
+  color: var(--brown-deep);
+}
+
+/* Do's and Don'ts */
+.dos-donts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 10px 0;
+}
+
+.dos-box {
+  background: var(--green-dos-bg);
+  border: 1px solid var(--green-dos-border);
+  border-radius: 6px;
+  padding: 12px 14px;
+}
+
+.donts-box {
+  background: var(--red-donts-bg);
+  border: 1px solid var(--red-donts-border);
+  border-radius: 6px;
+  padding: 12px 14px;
+}
+
+.box-header {
+  font-family: var(--app-font-sans);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dos-header {
+  color: var(--green-dos);
+}
+
+.donts-header {
+  color: var(--red-donts);
+}
+
+.item-label {
+  font-family: var(--app-font-sans);
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 2px;
+}
+
+.item-note {
+  font-family: var(--app-font-sans);
+  font-size: 10.5px;
+  line-height: 1.55;
+  color: var(--brown-mid);
+}
+
+.dos-item-label { color: var(--green-dos); }
+.donts-item-label { color: var(--red-donts); }
+
+/* Section header band */
+.section-band {
+  background: var(--section-header-bg);
+  border-radius: 6px;
+  padding: 10px 16px;
+  margin: 16px 0 12px 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section-band-num {
+  font-family: var(--app-font-sans);
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--gold-light);
+  line-height: 1;
+  min-width: 28px;
+}
+
+.section-band-title {
+  font-family: var(--app-font-serif);
+  font-size: 16px;
+  font-weight: 700;
+  color: #FAF0D8;
+  line-height: 1.2;
+}
+
+/* Subsection divider */
+.sub-divider {
+  border: none;
+  border-top: 1px dashed var(--gold-light);
+  margin: 14px 0;
+}
+
+/* Reflection lines */
+.reflection-line {
+  border: none;
+  border-bottom: 1px solid var(--gold-light);
+  margin: 0 0 10px 0;
+  height: 20px;
+}
+
+/* Fear chips */
+.fear-chip {
+  background: var(--cream-card);
+  border: 1px solid var(--gold-light);
+  border-radius: 6px;
+  padding: 7px 11px;
+  margin-bottom: 6px;
+}
+
+.fear-chip-title {
+  font-family: var(--app-font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--red-donts);
+  margin-bottom: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.fear-chip-text {
+  font-family: var(--app-font-sans);
+  font-size: 10.5px;
+  color: var(--brown-mid);
+  line-height: 1.5;
+}
+
+/* Ornamental divider */
+.ornament {
+  text-align: center;
+  color: var(--gold);
+  font-size: 14px;
+  letter-spacing: 0.5em;
+  margin: 12px 0;
+  user-select: none;
+}
+
+/* Conclusion callout */
+.conclusion-box {
+  background: linear-gradient(135deg, #3D2210 0%, #5C3A1E 100%);
+  border-radius: 8px;
+  padding: 18px 20px;
+  margin: 16px 0;
+}
+
+.conclusion-verse-text {
+  font-family: var(--app-font-serif);
+  font-size: 13px;
+  font-style: italic;
+  line-height: 1.7;
+  color: #FAF0D8;
+}
+
+.conclusion-point {
+  background: rgba(255,255,255,0.08);
+  border-radius: 4px;
+  padding: 10px 14px;
+  margin-top: 10px;
+}
+
+.conclusion-point-title {
+  font-family: var(--app-font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  margin-bottom: 4px;
+}
+
+.conclusion-point-text {
+  font-family: var(--app-font-sans);
+  font-size: 11px;
+  line-height: 1.6;
+  color: rgba(250, 240, 216, 0.85);
+}
+
+@media print {
+  .document-bg {
+    background: white;
+    padding: 0;
+  }
+  .a4-page {
+    box-shadow: none;
+    margin: 0;
+    page-break-after: always;
+    width: 100%;
+  }
+}

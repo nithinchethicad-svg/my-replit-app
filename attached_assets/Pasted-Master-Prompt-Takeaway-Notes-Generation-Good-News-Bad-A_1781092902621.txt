@@ -1,0 +1,70 @@
+Master Prompt: Takeaway Notes Generation — "Good News, Bad Approach"
+1. Project Goal & Overview  
+Please analyze the attached presentation slides and speaker notes titled "Good news, Bad approach.docx" and "Good News, Bad Approach-Final". Use the slide generation tool to create a professional, interactive takeaway notes document highlighting the key insights. The final output must be structured in a portrait A4 format (1:1.414 aspect ratio), designed like a vertical report slide deck, and serve as an engaging handout for a youth group community.
+
+2. Tool Execution & Output Mechanics (Strict)
+
+Generate the takeaway notes using the native slide generation workflow.
+
+Do not output standalone text, markdown summaries, or raw HTML/code blocks.
+
+The output must be presented directly as interactive slide design candidates within this conversation.
+
+3. Structural & Layout Rules
+
+Page Layout & Ceiling: Portrait A4 format, maximum 8–10 pages.
+
+Visual Theme: Background color #FBF5E8 (warm cream/off‑white), youthful energy consistent with the slides.
+
+Page Progression:
+
+Page 1: Standalone title page with metadata from Slide 1.
+
+Body Pages: Combine related slides into single portrait pages for flow.
+
+Image Placeholders:
+
+Slide 3 (The Crossroads): Half‑page placeholder.
+
+Slide 12 ("I help you?"): Quarter‑page placeholder.
+
+Interactive Audience Space: Reflection questions from Slide 2 embedded with The Great Commission section. Each question followed by two empty bullet points for responses.
+
+Dynamic Scenarios: Slides 7 and 9 designed with structured tables or side‑by‑side comparison boxes.
+
+4. Content Integration & Composition
+
+Hierarchy: Section Header → Visual Verse Box → Do’s & Don’ts → Explanations.
+
+Sourcing Principle: Extract bullet points verbatim from slides; integrate explanations from speaker notes.
+
+Constraints:
+
+No outside information.
+
+Do not omit any content.
+
+Scripture passages must remain exactly as written below.
+
+5. Confirmed Scripture Text
+
+Mark 16:15  
+“And then he told them, “Go into all the world and preach the Good News to everyone.””
+
+Acts 17:22-23  
+“So Paul, standing before the council, addressed them as follows: “Men of Athens, I notice that you are very religious in every way, for as I was walking along I saw your many shrines. And one of your altars had this inscription on it: ‘To an Unknown God.’ This God, whom you worship without knowing, is the one I’m telling you about.”
+
+2 Timothy 2:23-24  
+“Again I say, don’t get involved in foolish, ignorant arguments that only start fights. A servant of the Lord must not quarrel but must be kind to everyone, be able to teach, and be patient with difficult people.”
+
+James 1:19  
+“Understand this, my dear brothers and sisters: You must all be quick to listen, slow to speak, and slow to get angry.”
+
+1 John 3:16-18 (Stitched Option B)  
+“... If someone has enough money to live well and sees a brother or sister in need but shows no compassion—how can God’s love be in that person? Dear children, let’s not merely say that we love each other; let us show the truth by our actions.”
+
+Luke 18:10-14 (Stitched Option B)  
+“...The Pharisee stood by himself and prayed this prayer: ‘I thank you, God, that I am not like other people...’ But the tax collector stood at a distance... saying, ‘O God, be merciful to me, for I am a sinner.’ I tell you, this sinner, not the Pharisee, returned home justified before God.”
+
+1 Corinthians 9:20-23 (Stitched)  
+“...When I am with those who are weak, I share their weakness, for I want to bring the weak to Christ. Yes, I try to find common ground with everyone...”

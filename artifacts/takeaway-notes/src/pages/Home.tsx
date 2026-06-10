@@ -113,7 +113,7 @@ export default function Home() {
         <Verse vref="Mark 16:15">
           &ldquo;And then he told them, &lsquo;Go into all the world and preach the Good News to everyone.&rsquo;&rdquo;
         </Verse>
-        <Illus src={IMG("image55.png")} alt="Crossroads: Stay Silent or Step Forward" h={230} />
+        <Illus src={IMG("page2.png")} alt="Crossroads: Stay Silent or Step Forward" h={400} />
         <div style={{ marginTop: 10, marginBottom: 8 }}>
           <div style={{ fontFamily: "Inter, sans-serif", fontSize: 11, fontWeight: 700, color: "#5C3A1E", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }}>Common Challenges &amp; Fears</div>
           {[
@@ -151,7 +151,7 @@ export default function Home() {
             { t: "Build Bridges from Known Truths", n: "Identify the truths they already know and accept, then gently use those as stepping stones to lead them toward the whole truth." },
           ]} />
         </div>
-        <Illus src={IMG("image22.png")} alt="Bad Approach vs Better Approach" h={310} />
+        <Illus src={IMG("page3.png")} alt="Bad Approach vs Better Approach" h={370} />
         <PageFooter n={3} />
       </div>
 

@@ -1,41 +1,77 @@
+const IMG = (name: string) => `${import.meta.env.BASE_URL}images/${name}`;
+
+const IllustrationBox = ({ src, alt, height = 160 }: { src: string; alt: string; height?: number }) => (
+  <div style={{
+    width: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    margin: "10px 0",
+    borderRadius: 8,
+    overflow: "hidden",
+    backgroundColor: "#1C1008",
+    minHeight: height,
+    padding: "0 4px",
+  }}>
+    <img
+      src={src}
+      alt={alt}
+      style={{
+        maxHeight: height,
+        maxWidth: "100%",
+        objectFit: "contain",
+        display: "block",
+      }}
+    />
+  </div>
+);
+
 export default function Home() {
   return (
     <div className="document-bg">
 
       {/* ─── PAGE 1: TITLE ─── */}
       <div className="a4-page">
-        {/* Decorative corner accent top-left */}
         <div style={{ position: "absolute", top: 28, left: 40, width: 48, height: 48, borderTop: "3px solid #C89B3C", borderLeft: "3px solid #C89B3C", borderRadius: "2px 0 0 0" }} />
-        {/* Decorative corner accent bottom-right */}
         <div style={{ position: "absolute", bottom: 40, right: 40, width: 48, height: 48, borderBottom: "3px solid #C89B3C", borderRight: "3px solid #C89B3C", borderRadius: "0 0 2px 0" }} />
 
-        {/* Top label */}
-        <div style={{ marginBottom: 64, marginTop: 16 }}>
+        <div style={{ marginBottom: 24, marginTop: 16 }}>
           <div className="section-num" style={{ marginBottom: 8 }}>Youth Group · Takeaway Notes</div>
           <div style={{ width: 48, height: 2, backgroundColor: "#D4622A" }} />
         </div>
 
-        {/* Main title */}
-        <div style={{ marginBottom: 20 }}>
-          <div className="display-title" style={{ marginBottom: 12 }}>Good News,</div>
-          <div className="display-title" style={{ color: "#D4622A", marginBottom: 16 }}>Bad Approach.</div>
-          <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, fontStyle: "italic", color: "#5C3A1E", lineHeight: 1.4 }}>
-            The Do's, Don'ts, and Awkward Moments
+        {/* Two-column: title left, image right */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, alignItems: "center", marginBottom: 20 }}>
+          <div>
+            <div className="display-title" style={{ marginBottom: 12 }}>Good News,</div>
+            <div className="display-title" style={{ color: "#D4622A", marginBottom: 16 }}>Bad Approach.</div>
+            <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 17, fontStyle: "italic", color: "#5C3A1E", lineHeight: 1.4 }}>
+              The Do's, Don'ts, and Awkward Moments
+            </div>
+          </div>
+          <div style={{
+            backgroundColor: "#1C1008",
+            borderRadius: 10,
+            overflow: "hidden",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            minHeight: 220,
+          }}>
+            <img src={IMG("image35.png")} alt="Should I bring up Jesus — awkward group scene" style={{ width: "100%", objectFit: "contain", display: "block" }} />
           </div>
         </div>
 
-        <div style={{ width: "100%", height: 1, background: "linear-gradient(90deg, #C89B3C, transparent)", margin: "28px 0" }} />
+        <div style={{ width: "100%", height: 1, background: "linear-gradient(90deg, #C89B3C, transparent)", margin: "20px 0" }} />
 
-        {/* Central decorative verse */}
-        <div style={{ padding: "20px 24px", background: "#F3E8C8", borderRadius: 8, border: "1px solid #C89B3C20", marginBottom: 32 }}>
+        <div style={{ padding: "16px 20px", background: "#F3E8C8", borderRadius: 8, border: "1px solid #C89B3C20", marginBottom: 24 }}>
           <div className="verse-ref" style={{ marginBottom: 8 }}>Colossians 4:5-6</div>
-          <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 15, fontStyle: "italic", lineHeight: 1.75, color: "#2C1A0F" }}>
+          <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, fontStyle: "italic", lineHeight: 1.75, color: "#2C1A0F" }}>
             "Live wisely among those who are not believers, and make the most of every opportunity. Let your conversation be gracious and attractive so that you will have the right answer for everyone."
           </div>
         </div>
 
-        {/* Four key sections overview */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 32 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 28 }}>
           <div style={{ background: "#FAF0D8", border: "1px solid #E8C87A", borderRadius: 6, padding: "10px 14px", display: "flex", alignItems: "flex-start", gap: 10 }}>
             <div style={{ fontFamily: "Inter, sans-serif", fontSize: 18, fontWeight: 800, color: "#D4622A", lineHeight: 1, minWidth: 24 }}>1</div>
             <div>
@@ -66,12 +102,9 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Bottom ornament */}
-        <div style={{ marginTop: "auto", paddingTop: 60 }}>
-          <div style={{ width: "100%", height: 1, background: "linear-gradient(90deg, transparent, #C89B3C, transparent)", marginBottom: 14 }} />
-          <div style={{ textAlign: "center", fontFamily: "Inter, sans-serif", fontSize: 11, color: "#8B6340", letterSpacing: "0.1em", textTransform: "uppercase" }}>
-            The Right Answer · The Right Tone
-          </div>
+        <div style={{ width: "100%", height: 1, background: "linear-gradient(90deg, transparent, #C89B3C, transparent)", marginBottom: 14 }} />
+        <div style={{ textAlign: "center", fontFamily: "Inter, sans-serif", fontSize: 11, color: "#8B6340", letterSpacing: "0.1em", textTransform: "uppercase" }}>
+          The Right Answer · The Right Tone
         </div>
 
         <div className="page-footer-rule" />
@@ -86,26 +119,21 @@ export default function Home() {
           <div style={{ width: 48, height: 2, backgroundColor: "#D4622A", marginTop: 8 }} />
         </div>
 
-        {/* Q1 */}
-        <div style={{ marginBottom: 18 }}>
+        <div style={{ marginBottom: 16 }}>
           <div style={{ fontFamily: "Inter, sans-serif", fontSize: 11.5, fontWeight: 700, color: "#D4622A", letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 6 }}>
             Q1 — Have you ever actually tried sharing the Gospel with someone? How did you go about it?
           </div>
           <div className="reflection-line" />
           <div className="reflection-line" />
         </div>
-
-        {/* Q2 */}
-        <div style={{ marginBottom: 18 }}>
+        <div style={{ marginBottom: 16 }}>
           <div style={{ fontFamily: "Inter, sans-serif", fontSize: 11.5, fontWeight: 700, color: "#D4622A", letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 6 }}>
             Q2 — If you're hesitant, what's stopping you? If you have, what challenges did you push through?
           </div>
           <div className="reflection-line" />
           <div className="reflection-line" />
         </div>
-
-        {/* Q3 */}
-        <div style={{ marginBottom: 22 }}>
+        <div style={{ marginBottom: 16 }}>
           <div style={{ fontFamily: "Inter, sans-serif", fontSize: 11.5, fontWeight: 700, color: "#D4622A", letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 6 }}>
             Q3 — If someone has ever tried sharing the Gospel with you, what did you like about it, and what totally annoyed or frustrated you?
           </div>
@@ -115,18 +143,24 @@ export default function Home() {
 
         <div className="ornament">— ✦ —</div>
 
-        {/* Section 1 */}
         <div className="section-band">
           <div className="section-band-num">1</div>
           <div className="section-band-title">The Great Commission: Why We Need to Share the Gospel</div>
         </div>
 
-        <div className="verse-box" style={{ marginBottom: 14 }}>
+        <div className="verse-box" style={{ marginBottom: 10 }}>
           <div className="verse-ref">Mark 16:15</div>
           <div className="verse-text">"And then he told them, "Go into all the world and preach the Good News to everyone.""</div>
         </div>
 
-        <div style={{ marginBottom: 10 }}>
+        {/* Crossroads — half-page image */}
+        <IllustrationBox
+          src={IMG("image55.png")}
+          alt="The crossroads: Stay Silent or Step Forward"
+          height={190}
+        />
+
+        <div style={{ marginTop: 10 }}>
           <div style={{ fontFamily: "Inter, sans-serif", fontSize: 11, fontWeight: 700, color: "#5C3A1E", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }}>Common Challenges &amp; Fears</div>
           <div className="fear-chip">
             <div className="fear-chip-title">Fear of Being "That Guy"</div>
@@ -154,7 +188,7 @@ export default function Home() {
         <div className="page-badge">Page 2</div>
       </div>
 
-      {/* ─── PAGE 3: SECTION 2.1 — DON'T FIGHT THE DARK ─── */}
+      {/* ─── PAGE 3: SECTION 2.1 + 2.2 ─── */}
       <div className="a4-page">
         <div className="section-band">
           <div className="section-band-num">2</div>
@@ -166,21 +200,19 @@ export default function Home() {
           <div className="subsection-title">Don't Fight the Dark, Just Bring the Light</div>
         </div>
 
-        <div className="verse-box" style={{ marginBottom: 12 }}>
+        <div className="verse-box" style={{ marginBottom: 10 }}>
           <div className="verse-ref">Acts 17:22-23</div>
           <div className="verse-text">"So Paul, standing before the council, addressed them as follows: "Men of Athens, I notice that you are very religious in every way, for as I was walking along I saw your many shrines. And one of your altars had this inscription on it: 'To an Unknown God.' This God, whom you worship without knowing, is the one I'm telling you about.""</div>
         </div>
 
         <div className="dos-donts-grid">
           <div className="donts-box">
-            <div className="box-header donts-header">
-              <span>✗</span> Don'ts
-            </div>
-            <div style={{ marginBottom: 10 }}>
+            <div className="box-header donts-header"><span>✗</span> Don'ts</div>
+            <div style={{ marginBottom: 8 }}>
               <div className="item-label donts-item-label">The "Wrong vs. Right" Power Play</div>
               <div className="item-note">Avoid leading with how they are wrong and you are right. This shifts the focus to winning an argument rather than sharing a message.</div>
             </div>
-            <div style={{ borderTop: "1px solid #E8A898", paddingTop: 8, marginBottom: 10 }}>
+            <div style={{ borderTop: "1px solid #E8A898", paddingTop: 8, marginBottom: 8 }}>
               <div className="item-label donts-item-label">The "Offensive Approach"</div>
               <div className="item-note">Do not be offensive. When you attack someone's current perspective, you build a wall instead of a bridge, causing them to shut down immediately.</div>
             </div>
@@ -190,14 +222,12 @@ export default function Home() {
             </div>
           </div>
           <div className="dos-box">
-            <div className="box-header dos-header">
-              <span>✓</span> Do's
-            </div>
-            <div style={{ marginBottom: 10 }}>
+            <div className="box-header dos-header"><span>✓</span> Do's</div>
+            <div style={{ marginBottom: 8 }}>
               <div className="item-label dos-item-label">Share Your Truth, Don't Defeat Theirs</div>
               <div className="item-note">Your mission is simply to share your truth. Release the need to prove them wrong; focus on what you believe to be true.</div>
             </div>
-            <div style={{ borderTop: "1px solid #A8D5B5", paddingTop: 8, marginBottom: 10 }}>
+            <div style={{ borderTop: "1px solid #A8D5B5", paddingTop: 8, marginBottom: 8 }}>
               <div className="item-label dos-item-label">Anchor in Common Ground</div>
               <div className="item-note">Find the common ground between your perspectives. Starting from a place where they can relate helps build rapport rather than conflict.</div>
             </div>
@@ -208,6 +238,9 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Bad Approach vs Better Approach illustration */}
+        <IllustrationBox src={IMG("image22.png")} alt="Bad Approach vs Better Approach in conversation" height={148} />
+
         <hr className="sub-divider" />
 
         <div style={{ marginBottom: 6 }}>
@@ -215,7 +248,7 @@ export default function Home() {
           <div className="subsection-title">Listen to Understand, Not to Reply</div>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 10 }}>
           <div className="verse-box" style={{ margin: 0 }}>
             <div className="verse-ref">2 Timothy 2:23-24</div>
             <div className="verse-text">"Again I say, don't get involved in foolish, ignorant arguments that only start fights. A servant of the Lord must not quarrel but must be kind to everyone, be able to teach, and be patient with difficult people."</div>
@@ -228,9 +261,7 @@ export default function Home() {
 
         <div className="dos-donts-grid">
           <div className="donts-box">
-            <div className="box-header donts-header">
-              <span>✗</span> Don'ts
-            </div>
+            <div className="box-header donts-header"><span>✗</span> Don'ts</div>
             <div style={{ marginBottom: 8 }}>
               <div className="item-label donts-item-label">Listening to Find Holes or Mistakes</div>
               <div className="item-note">Treating their words as ammunition rather than as part of a conversation.</div>
@@ -245,9 +276,7 @@ export default function Home() {
             </div>
           </div>
           <div className="dos-box">
-            <div className="box-header dos-header">
-              <span>✓</span> Do's
-            </div>
+            <div className="box-header dos-header"><span>✓</span> Do's</div>
             <div style={{ marginBottom: 8 }}>
               <div className="item-label dos-item-label">Seek to Understand Their Perspective</div>
               <div className="item-note">Listen with the goal of discovering why they believe what they believe.</div>
@@ -263,6 +292,9 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Brain vs Heart listening illustration */}
+        <IllustrationBox src={IMG("image72.png")} alt="Brain trying to dismantle vs Heart trying to understand" height={140} />
+
         <div className="page-footer-rule" />
         <div className="page-badge">Page 3</div>
       </div>
@@ -274,16 +306,14 @@ export default function Home() {
           <div className="subsection-title">Love Your Friends, Lose the Lecture</div>
         </div>
 
-        <div className="verse-box" style={{ marginBottom: 12 }}>
+        <div className="verse-box" style={{ marginBottom: 10 }}>
           <div className="verse-ref">1 John 3:16-18</div>
           <div className="verse-text">"...If someone has enough money to live well and sees a brother or sister in need but shows no compassion — how can God's love be in that person? Dear children, let's not merely say that we love each other; let us show the truth by our actions."</div>
         </div>
 
-        <div className="dos-donts-grid" style={{ marginBottom: 6 }}>
+        <div className="dos-donts-grid">
           <div className="donts-box">
-            <div className="box-header donts-header">
-              <span>✗</span> Don'ts
-            </div>
+            <div className="box-header donts-header"><span>✗</span> Don'ts</div>
             <div style={{ marginBottom: 8 }}>
               <div className="item-label donts-item-label">Prioritizing Lectures over Genuine Support</div>
               <div className="item-note">When a friend is in need, immediately lecturing them about faith ignores their reality and creates a barrier.</div>
@@ -298,9 +328,7 @@ export default function Home() {
             </div>
           </div>
           <div className="dos-box">
-            <div className="box-header dos-header">
-              <span>✓</span> Do's
-            </div>
+            <div className="box-header dos-header"><span>✓</span> Do's</div>
             <div style={{ marginBottom: 8 }}>
               <div className="item-label dos-item-label">Demonstrate Love Through Action First</div>
               <div className="item-note">Before speaking about God's love, demonstrate it. Meeting physical, emotional, or financial needs is the most tangible way to show you care.</div>
@@ -316,6 +344,9 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Correct words wrong moment vs Love first truth later */}
+        <IllustrationBox src={IMG("image67.png")} alt="Correct words, wrong moment vs Love first, truth later" height={148} />
+
         <div className="ornament">— ✦ —</div>
 
         <div className="section-band">
@@ -328,7 +359,7 @@ export default function Home() {
           <div className="subsection-title">Battling Spiritual Pride, Showing Empathy</div>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 10 }}>
           <div className="verse-box" style={{ margin: 0 }}>
             <div className="verse-ref">Luke 18:10-14</div>
             <div className="verse-text">"...The Pharisee stood by himself and prayed: 'I thank you, God, that I am not like other people...' But the tax collector stood at a distance... saying, 'O God, be merciful to me, for I am a sinner.' I tell you, this sinner, not the Pharisee, returned home justified before God."</div>
@@ -341,9 +372,7 @@ export default function Home() {
 
         <div className="dos-donts-grid">
           <div className="donts-box">
-            <div className="box-header donts-header">
-              <span>✗</span> Don'ts
-            </div>
+            <div className="box-header donts-header"><span>✗</span> Don'ts</div>
             <div style={{ marginBottom: 8 }}>
               <div className="item-label donts-item-label">Thinking You Are Better Than Others</div>
               <div className="item-note">Acting like a modern-day Pharisee creates an immediate barrier that makes you completely unapproachable.</div>
@@ -358,9 +387,7 @@ export default function Home() {
             </div>
           </div>
           <div className="dos-box">
-            <div className="box-header dos-header">
-              <span>✓</span> Do's
-            </div>
+            <div className="box-header dos-header"><span>✓</span> Do's</div>
             <div style={{ marginBottom: 8 }}>
               <div className="item-label dos-item-label">Cultivate a Humble Heart Condition</div>
               <div className="item-note">Always maintain the awareness that you are no better than anyone else — your standing is a gift, not an achievement.</div>
@@ -376,6 +403,9 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Pride distances vs Humility brings closer */}
+        <IllustrationBox src={IMG("image85.png")} alt="Pride distances us from others vs Humility brings us closer" height={148} />
+
         <div className="page-footer-rule" />
         <div className="page-badge">Page 4</div>
       </div>
@@ -387,7 +417,7 @@ export default function Home() {
           <div className="subsection-title">High Standards, Low Bridges</div>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 10 }}>
           <div className="verse-box" style={{ margin: 0 }}>
             <div className="verse-ref">Jude 1:22-23</div>
             <div className="verse-text">"And you must show mercy to those whose faith is wavering. Rescue others by snatching them from the flames of judgment. Show mercy to still others, but do so with great caution, hating the sins that contaminate their lives."</div>
@@ -398,14 +428,12 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="dos-donts-grid" style={{ marginBottom: 6 }}>
+        <div className="dos-donts-grid">
           <div className="donts-box">
-            <div className="box-header donts-header">
-              <span>✗</span> Don'ts
-            </div>
+            <div className="box-header donts-header"><span>✗</span> Don'ts</div>
             <div style={{ marginBottom: 8 }}>
               <div className="item-label donts-item-label">Gatekeeping with High Standards</div>
-              <div className="item-note">Forcing your personal, high standards onto outsiders or new believers. When you expect people to completely change before they can relate to you, you build an inaccessible wall.</div>
+              <div className="item-note">Forcing your personal, high standards onto outsiders or new believers — when you expect people to completely change before they can relate to you, you build an inaccessible wall.</div>
             </div>
             <div style={{ borderTop: "1px solid #E8A898", paddingTop: 8 }}>
               <div className="item-label donts-item-label">Conditional Mingling</div>
@@ -413,9 +441,7 @@ export default function Home() {
             </div>
           </div>
           <div className="dos-box">
-            <div className="box-header dos-header">
-              <span>✓</span> Do's
-            </div>
+            <div className="box-header dos-header"><span>✓</span> Do's</div>
             <div style={{ marginBottom: 8 }}>
               <div className="item-label dos-item-label">Keep Your Standards High, but the Bridge Low</div>
               <div className="item-note">Hold yourself to the highest personal standards of faith and integrity, but make sure the bridge you build outward is flat, wide, and easy for anyone to walk across.</div>
@@ -427,6 +453,9 @@ export default function Home() {
           </div>
         </div>
 
+        {/* High Standards High Barriers vs High Standards Low Bridges */}
+        <IllustrationBox src={IMG("image83.png")} alt="High Standards High Barriers vs High Standards Low Bridges" height={160} />
+
         <hr className="sub-divider" />
 
         <div style={{ marginBottom: 6 }}>
@@ -434,46 +463,38 @@ export default function Home() {
           <div className="subsection-title">Set Apart, Not Pulled Apart</div>
         </div>
 
-        <div className="verse-box" style={{ marginBottom: 12 }}>
+        <div className="verse-box" style={{ marginBottom: 10 }}>
           <div className="verse-ref">1 Corinthians 9:20-23</div>
           <div className="verse-text">"...When I am with those who are weak, I share their weakness, for I want to bring the weak to Christ. Yes, I try to find common ground with everyone, doing everything I can to save some. I do everything to spread the Good News and share in its blessings."</div>
         </div>
 
         <div className="dos-donts-grid">
           <div className="donts-box">
-            <div className="box-header donts-header">
-              <span>✗</span> Don'ts
-            </div>
+            <div className="box-header donts-header"><span>✗</span> Don'ts</div>
             <div style={{ marginBottom: 8 }}>
               <div className="item-label donts-item-label">Becoming Unrelatable</div>
-              <div className="item-note">Avoid becoming so different or radical in your lifestyle that you become completely unrelatable to normal people. When you act like an alien, others feel you can't understand their struggles.</div>
+              <div className="item-note">Avoid becoming so different or radical in your lifestyle that you become completely unrelatable. When you act like an alien, others feel you can't understand their struggles.</div>
             </div>
             <div style={{ borderTop: "1px solid #E8A898", paddingTop: 8 }}>
               <div className="item-label donts-item-label">Forcing a Personality Change</div>
-              <div className="item-note">Don't make people feel like they have to change their entire personality, vocabulary, or hobbies to hang out with you or become a Christian. Faith changes the heart, not a person's unique identity.</div>
+              <div className="item-note">Don't make people feel like they have to change their entire personality, vocabulary, or hobbies to hang out with you or become a Christian.</div>
             </div>
           </div>
           <div className="dos-box">
-            <div className="box-header dos-header">
-              <span>✓</span> Do's
-            </div>
+            <div className="box-header dos-header"><span>✓</span> Do's</div>
             <div style={{ marginBottom: 8 }}>
               <div className="item-label dos-item-label">Mingle with the World, Not with Sin</div>
-              <div className="item-note">Maintain a clear difference between your life and the patterns of the world, but don't isolate yourself. Be present in the spaces and lives of unbelievers — just draw the line at participating in sin.</div>
+              <div className="item-note">Be present in the spaces and lives of unbelievers — just draw the line at participating in sin.</div>
             </div>
             <div style={{ borderTop: "1px solid #A8D5B5", paddingTop: 8 }}>
               <div className="item-label dos-item-label">Accept the Person, Reject the Sin</div>
-              <div className="item-note">Walk the fine line of being deeply loving and accepting of everyone without compromising your convictions. People should feel entirely accepted as individuals, even if you don't endorse certain behaviors.</div>
+              <div className="item-note">Walk the fine line of being deeply loving and accepting of everyone without compromising your convictions.</div>
             </div>
           </div>
         </div>
 
-        <div style={{ background: "#FAF0D8", border: "1px solid #C89B3C", borderRadius: 6, padding: "12px 16px", marginTop: 14 }}>
-          <div style={{ fontFamily: "Inter, sans-serif", fontSize: 11, fontWeight: 700, color: "#5C3A1E", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 6 }}>Key Principle</div>
-          <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 13, fontStyle: "italic", color: "#2C1A0F", lineHeight: 1.65 }}>
-            "You are called to be <em>set apart</em> — not so removed from the world that you can't reach it, and not so absorbed in it that you lose what makes you different."
-          </div>
-        </div>
+        {/* Isolation vs Christ-like Presence vs Compromise balancing beam */}
+        <IllustrationBox src={IMG("image87.png")} alt="Balancing beam: Isolation — Christ-like Presence — Compromise" height={152} />
 
         <div className="page-footer-rule" />
         <div className="page-badge">Page 5</div>
@@ -491,7 +512,7 @@ export default function Home() {
           <div className="subsection-title">Being the First Gospel Your Friends See</div>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 10 }}>
           <div className="verse-box" style={{ margin: 0 }}>
             <div className="verse-ref">Matthew 5:16</div>
             <div className="verse-text">"In the same way, let your good deeds shine out for all to see, so that everyone will praise your heavenly Father."</div>
@@ -502,27 +523,23 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="dos-donts-grid" style={{ marginBottom: 6 }}>
+        <div className="dos-donts-grid">
           <div className="donts-box">
-            <div className="box-header donts-header">
-              <span>✗</span> Don'ts
-            </div>
+            <div className="box-header donts-header"><span>✗</span> Don'ts</div>
             <div style={{ marginBottom: 8 }}>
               <div className="item-label donts-item-label">Living Hypocritically</div>
               <div className="item-note">Avoid preaching love, kindness, and grace if your everyday life doesn't reflect those values. When your lifestyle contradicts your message, Christianity looks like hypocrisy to outsiders.</div>
             </div>
             <div style={{ borderTop: "1px solid #E8A898", paddingTop: 8 }}>
               <div className="item-label donts-item-label">Words Before Witness</div>
-              <div className="item-note">Do not rely on vocal preaching before you have established a living testimony. Speaking truth without a matching lifestyle is ineffective and pushes people away.</div>
+              <div className="item-note">Do not rely on vocal preaching before you have established a living testimony. Speaking truth without a matching lifestyle pushes people away.</div>
             </div>
           </div>
           <div className="dos-box">
-            <div className="box-header dos-header">
-              <span>✓</span> Do's
-            </div>
+            <div className="box-header dos-header"><span>✓</span> Do's</div>
             <div style={{ marginBottom: 8 }}>
               <div className="item-label dos-item-label">Let Your Life Be the First Bible They Read</div>
-              <div className="item-note">Before your friends ever open a Bible, they are reading your life. Show them what Christianity looks like in action through your character, habits, and reactions.</div>
+              <div className="item-note">Before your friends ever open a Bible, they are reading your life. Show them what Christianity looks like through your character, habits, and reactions.</div>
             </div>
             <div style={{ borderTop: "1px solid #A8D5B5", paddingTop: 8 }}>
               <div className="item-label dos-item-label">Let Your Lifestyle Create Holy Envy</div>
@@ -531,6 +548,9 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Posting Faith but Ignoring Pain vs Sitting in Love Like Christ Did */}
+        <IllustrationBox src={IMG("image78.png")} alt="Posting Faith but ignoring pain vs Sitting in love like Christ did" height={152} />
+
         <hr className="sub-divider" />
 
         <div style={{ marginBottom: 6 }}>
@@ -538,52 +558,51 @@ export default function Home() {
           <div className="subsection-title">Spirit Led, Not Knowledge Driven</div>
         </div>
 
-        <div className="verse-box" style={{ marginBottom: 12 }}>
+        <div className="verse-box" style={{ marginBottom: 10 }}>
           <div className="verse-ref">1 Corinthians 2:1-5</div>
           <div className="verse-text">"When I first came to you, dear brothers and sisters, I didn't use lofty words and impressive wisdom to tell you God's secret plan... Rather than using clever and persuasive speeches, I relied only on the power of the Holy Spirit. I did this so you would not trust in human wisdom but in the power of God."</div>
         </div>
 
         <div className="dos-donts-grid">
           <div className="donts-box">
-            <div className="box-header donts-header">
-              <span>✗</span> Don'ts
-            </div>
+            <div className="box-header donts-header"><span>✗</span> Don'ts</div>
             <div style={{ marginBottom: 8 }}>
               <div className="item-label donts-item-label">Relying on Intellectual Arguments</div>
-              <div className="item-note">Avoid relying purely on facts, archaeology, or high philosophy to prove God is real. These things might appeal to the intellect but rarely change a person's heart or create a longing for Jesus.</div>
+              <div className="item-note">Avoid relying purely on facts, archaeology, or high philosophy to prove God is real. These things appeal to the intellect but rarely change a person's heart or create a longing for Jesus.</div>
             </div>
             <div style={{ borderTop: "1px solid #E8A898", paddingTop: 8 }}>
               <div className="item-label donts-item-label">Overcomplicating the Simplicity of the Cross</div>
-              <div className="item-note">Avoid thinking you need a theology degree to speak about faith. Relying heavily on "clever speeches" distracts people with side arguments rather than keeping focus on Jesus.</div>
+              <div className="item-note">Relying heavily on "clever speeches" distracts people with side arguments rather than keeping focus on Jesus.</div>
             </div>
           </div>
           <div className="dos-box">
-            <div className="box-header dos-header">
-              <span>✓</span> Do's
-            </div>
+            <div className="box-header dos-header"><span>✓</span> Do's</div>
             <div style={{ marginBottom: 8 }}>
               <div className="item-label dos-item-label">Rely on the Holy Spirit</div>
-              <div className="item-note">Make the Holy Spirit your primary reliance when sharing the Gospel. He is the most effective guide because only He fully knows and can penetrate the deep secrets of the human heart.</div>
+              <div className="item-note">Make the Holy Spirit your primary reliance when sharing the Gospel. He fully knows and can penetrate the deep secrets of the human heart.</div>
             </div>
             <div style={{ borderTop: "1px solid #A8D5B5", paddingTop: 8 }}>
               <div className="item-label dos-item-label">Target the Heart, Not Just the Brain</div>
-              <div className="item-note">Shift your goal from simply changing someone's mind to letting the Spirit reach their heart. Trust that the Holy Spirit can stir up a genuine, personal need for Christ in ways human wisdom never could.</div>
+              <div className="item-note">Trust that the Holy Spirit can stir up a genuine, personal need for Christ in ways human wisdom and clever arguments never could.</div>
             </div>
           </div>
         </div>
+
+        {/* What I think I need (heavy backpack) vs What God expects to bring */}
+        <IllustrationBox src={IMG("image86.png")} alt="What I think I need vs What God expects to bring" height={148} />
 
         <div className="page-footer-rule" />
         <div className="page-badge">Page 6</div>
       </div>
 
-      {/* ─── PAGE 7: SECTION 4.3 ─── */}
+      {/* ─── PAGE 7: SECTION 4.3 + RECAP ─── */}
       <div className="a4-page">
         <div style={{ marginBottom: 6 }}>
           <div className="section-num" style={{ marginBottom: 4 }}>4.3</div>
           <div className="subsection-title">Trusting God's Call and His Timing</div>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 10 }}>
           <div className="verse-box" style={{ margin: 0 }}>
             <div className="verse-ref">John 6:44</div>
             <div className="verse-text">"For no one can come to me unless the Father who sent me draws them to me, and at the last day I will raise them up."</div>
@@ -594,37 +613,35 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="dos-donts-grid" style={{ marginBottom: 20 }}>
+        <div className="dos-donts-grid">
           <div className="donts-box">
-            <div className="box-header donts-header">
-              <span>✗</span> Don'ts
-            </div>
+            <div className="box-header donts-header"><span>✗</span> Don'ts</div>
             <div style={{ marginBottom: 8 }}>
               <div className="item-label donts-item-label">Trying to Play the Savior in Your Own Strength</div>
               <div className="item-note">Stop thinking that you can bring someone into salvation through your own strength, knowledge, or effort. Only God can save a person — do not try to take on His role or force a spiritual outcome.</div>
             </div>
             <div style={{ borderTop: "1px solid #E8A898", paddingTop: 8 }}>
               <div className="item-label donts-item-label">Overstepping Your Bounds and Pushing People Away</div>
-              <div className="item-note">Avoid pushing beyond what God has asked you to do. If you keep forcing the issue out of anxiety, you risk frustrating the person and pushing them away from better help later on.</div>
+              <div className="item-note">Avoid pushing beyond what God has asked you to do. If you keep forcing the issue out of anxiety, you risk pushing them away from better help later on.</div>
             </div>
           </div>
           <div className="dos-box">
-            <div className="box-header dos-header">
-              <span>✓</span> Do's
-            </div>
+            <div className="box-header dos-header"><span>✓</span> Do's</div>
             <div style={{ marginBottom: 8 }}>
               <div className="item-label dos-item-label">Play Your Part in God's Process</div>
               <div className="item-note">Realize that it might not be your job to walk someone all the way through to salvation. Your assignment may be small — perhaps just one or two conversations or actions.</div>
             </div>
             <div style={{ borderTop: "1px solid #A8D5B5", paddingTop: 8 }}>
               <div className="item-label dos-item-label">Trust God's Timing and Strategy</div>
-              <div className="item-note">Do what you can, then intentionally step back and trust God's unique way and timing for that person's life. Leave the ultimate results to Him — He is overseeing the entire journey.</div>
+              <div className="item-note">Do what you can, then intentionally step back and trust God's unique way and timing for that person's life. Leave the ultimate results to Him.</div>
             </div>
           </div>
         </div>
 
-        {/* Summary takeaway grid */}
-        <div style={{ marginBottom: 16 }}>
+        {/* One plants, another waters, God makes it grow */}
+        <IllustrationBox src={IMG("image88.png")} alt="One plants, another waters, God makes it grow" height={168} />
+
+        <div style={{ marginTop: 14, marginBottom: 14 }}>
           <div style={{ fontFamily: "Inter, sans-serif", fontSize: 11, fontWeight: 700, color: "#5C3A1E", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>Quick Recap — The Four Big Ideas</div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
             <div style={{ background: "#FAF0D8", border: "1px solid #E8C87A", borderRadius: 6, padding: "10px 14px" }}>
@@ -672,11 +689,10 @@ export default function Home() {
 
       {/* ─── PAGE 8: CONCLUSION ─── */}
       <div className="a4-page">
-        {/* Decorative corner accents */}
         <div style={{ position: "absolute", top: 28, left: 40, width: 48, height: 48, borderTop: "3px solid #C89B3C", borderLeft: "3px solid #C89B3C", borderRadius: "2px 0 0 0" }} />
         <div style={{ position: "absolute", bottom: 40, right: 40, width: 48, height: 48, borderBottom: "3px solid #C89B3C", borderRight: "3px solid #C89B3C", borderRadius: "0 0 2px 0" }} />
 
-        <div style={{ marginBottom: 20 }}>
+        <div style={{ marginBottom: 16 }}>
           <div className="section-num" style={{ marginBottom: 6 }}>Conclusion</div>
           <div className="section-title" style={{ fontSize: 28 }}>The Right Answer,</div>
           <div className="section-title" style={{ fontSize: 28, color: "#D4622A" }}>The Right Tone.</div>
@@ -698,28 +714,39 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Final reflection space */}
-        <div style={{ marginTop: 20, marginBottom: 20 }}>
-          <div style={{ fontFamily: "Inter, sans-serif", fontSize: 11, fontWeight: 700, color: "#D4622A", letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 10 }}>
+        {/* "Good news, Good Approach" summary infographic */}
+        <div style={{
+          borderRadius: 8,
+          overflow: "hidden",
+          margin: "14px 0",
+          border: "1px solid #C89B3C40",
+        }}>
+          <img
+            src={IMG("image90.png")}
+            alt="Good News Good Approach — Listen, Serve, Humble summary"
+            style={{ width: "100%", display: "block", objectFit: "contain" }}
+          />
+        </div>
+
+        <div style={{ marginTop: 14 }}>
+          <div style={{ fontFamily: "Inter, sans-serif", fontSize: 11, fontWeight: 700, color: "#D4622A", letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 8 }}>
             My Personal Commitment — One Thing I'll Do Differently:
           </div>
           <div className="reflection-line" />
           <div className="reflection-line" />
-          <div className="reflection-line" />
         </div>
 
-        {/* Closing ornament */}
-        <div style={{ textAlign: "center", marginTop: 32, marginBottom: 24 }}>
-          <div style={{ width: 40, height: 40, background: "linear-gradient(135deg, #D4622A, #C89B3C)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 12px auto" }}>
+        <div style={{ textAlign: "center", marginTop: 20, marginBottom: 10 }}>
+          <div style={{ width: 40, height: 40, background: "linear-gradient(135deg, #D4622A, #C89B3C)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 10px auto" }}>
             <span style={{ color: "white", fontSize: 18 }}>✦</span>
           </div>
-          <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, fontStyle: "italic", color: "#5C3A1E", lineHeight: 1.6 }}>
+          <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 13, fontStyle: "italic", color: "#5C3A1E", lineHeight: 1.6 }}>
             "The message hasn't changed.<br />
             But the <em>approach</em> — that's on us."
           </div>
         </div>
 
-        <div style={{ textAlign: "center", marginTop: 20 }}>
+        <div style={{ textAlign: "center", marginTop: 12 }}>
           <div style={{ fontFamily: "Inter, sans-serif", fontSize: 10, color: "#8B6340", letterSpacing: "0.12em", textTransform: "uppercase" }}>
             Good News, Bad Approach · Youth Group Series
           </div>

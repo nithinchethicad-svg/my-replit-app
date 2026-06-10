@@ -390,15 +390,47 @@
   color: rgba(250, 240, 216, 0.85);
 }
 
+/* ─── Print / PDF export ─── */
 @media print {
-  .document-bg {
-    background: white;
-    padding: 0;
-  }
-  .a4-page {
-    box-shadow: none;
+  @page {
+    size: A4 portrait;
     margin: 0;
-    page-break-after: always;
-    width: 100%;
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: white !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .document-bg {
+    background: white !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .a4-page {
+    width: 210mm !important;
+    min-height: 297mm !important;
+    max-height: 297mm !important;
+    overflow: hidden !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    padding: 14mm 16mm !important;
+    page-break-after: always !important;
+    break-after: page !important;
+    /* preserve background colours in print */
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .a4-page:last-child {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
   }
 }

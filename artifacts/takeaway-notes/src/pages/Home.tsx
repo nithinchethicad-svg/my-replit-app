@@ -8,13 +8,13 @@ const Illus = ({ src, alt, h }: { src: string; alt: string; h: number }) => (
 
 const Band = ({ title }: { title: string }) => (
   <div className="section-band" style={{ marginBottom: 12 }}>
-    <div className="section-band-title" style={{ fontSize: 16 }}>{title}</div>
+    <div className="section-band-title" style={{ fontSize: 20 }}>{title}</div>
   </div>
 );
 
 const Sub = ({ title }: { title: string }) => (
   <div style={{
-    fontFamily: "'Playfair Display', serif", fontSize: 15, fontStyle: "italic",
+    fontFamily: "'Playfair Display', serif", fontSize: 18, fontStyle: "italic",
     fontWeight: 600, color: "#5C3A1E", margin: "6px 0 10px 0",
     borderLeft: "3px solid #C89B3C", paddingLeft: 10,
   }}>{title}</div>
@@ -97,16 +97,12 @@ export default function Home() {
       <div className="a4-page">
         <div style={{ marginBottom: 20 }}>
           <div className="section-num" style={{ marginBottom: 6 }}>Before We Begin</div>
-          <div className="section-title" style={{ fontSize: 26 }}>Discussion &amp; Reflection</div>
+          <div className="section-title" style={{ fontSize: 30 }}>Discussion &amp; Reflection</div>
           <div style={{ width: 48, height: 2, backgroundColor: "#D4622A", marginTop: 8 }} />
         </div>
         <Q q="Q1 — Have you ever actually tried sharing the Gospel with someone? How did you go about it?" />
         <Q q="Q2 — If you're hesitant, what's stopping you? If you have, what challenges did you push through?" />
         <Q q="Q3 — If someone has ever tried sharing the Gospel with you, what did you like about it, and what totally annoyed or frustrated you?" />
-        <div style={{ marginTop: 24, marginBottom: 8 }}>
-          <div style={{ fontFamily: "Inter, sans-serif", fontSize: 10.5, fontWeight: 700, color: "#8B6340", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>Additional Notes</div>
-          <ReflLine /><ReflLine /><ReflLine /><ReflLine /><ReflLine /><ReflLine />
-        </div>
         <div className="ornament">— ✦ —</div>
         <PageFooter n={1} />
       </div>
@@ -257,7 +253,7 @@ export default function Home() {
             { t: "Create a Safe Space for the Vulnerable", n: "Intentionally allow the weak, wavering, and vulnerable to approach you exactly as they are — no pressure to live up to a standard they aren't ready for." },
           ]} />
         </div>
-        <Illus src={IMG("image83.png")} alt="High Standards High Barriers vs Low Bridges" h={320} />
+        <Illus src={IMG("image83.png")} alt="High Standards High Barriers vs Low Bridges" h={390} />
         <PageFooter n={7} />
       </div>
 
@@ -277,7 +273,7 @@ export default function Home() {
             { t: "Accept the Person, Reject the Sin", n: "Walk the fine line of being deeply loving and accepting of everyone without compromising your convictions." },
           ]} />
         </div>
-        <Illus src={IMG("image87.png")} alt="Balancing beam: Isolation — Christ-like Presence — Compromise" h={340} />
+        <Illus src={IMG("image87.png")} alt="Balancing beam: Isolation — Christ-like Presence — Compromise" h={410} />
         <PageFooter n={8} />
       </div>
 
@@ -303,7 +299,7 @@ export default function Home() {
             { t: "Let Your Lifestyle Create Holy Envy", n: "Live so that the peace, joy, and love in your life naturally attract others to God. When people genuinely want what you have, your faith explanation becomes far more effective." },
           ]} />
         </div>
-        <Illus src={IMG("image78.png")} alt="Posting Faith but ignoring pain vs Sitting in love like Christ did" h={330} />
+        <Illus src={IMG("image78.png")} alt="Posting Faith but ignoring pain vs Sitting in love like Christ did" h={390} />
         <PageFooter n={9} />
       </div>
 
@@ -323,7 +319,7 @@ export default function Home() {
             { t: "Target the Heart, Not Just the Brain", n: "Trust that the Holy Spirit can stir up a genuine, personal need for Christ in ways human wisdom and clever arguments never could." },
           ]} />
         </div>
-        <Illus src={IMG("image86.png")} alt="What I think I need vs What God expects to bring" h={330} />
+        <Illus src={IMG("image86.png")} alt="What I think I need vs What God expects to bring" h={390} />
         <PageFooter n={10} />
       </div>
 
@@ -348,7 +344,7 @@ export default function Home() {
             { t: "Trust God's Timing and Strategy", n: "Do what you can, then intentionally step back and trust God's unique way and timing for that person's life. Leave the ultimate results to Him." },
           ]} />
         </div>
-        <Illus src={IMG("image88.png")} alt="One plants, another waters, God makes it grow" h={330} />
+        <Illus src={IMG("image88.png")} alt="One plants, another waters, God makes it grow" h={390} />
         <PageFooter n={11} />
       </div>
 
@@ -356,10 +352,10 @@ export default function Home() {
       <div className="a4-page">
         <div style={{ marginBottom: 20 }}>
           <div className="section-num" style={{ marginBottom: 6 }}>Wrapping Up</div>
-          <div className="section-title" style={{ fontSize: 26 }}>Conclusion</div>
+          <div className="section-title" style={{ fontSize: 30 }}>Conclusion</div>
           <div style={{ width: 48, height: 2, backgroundColor: "#D4622A", marginTop: 8 }} />
         </div>
-        <Illus src={IMG("image90.png")} alt="Good News Good Approach summary" h={580} />
+        <Illus src={IMG("image90.png")} alt="Good News Good Approach summary" h={650} />
         <PageFooter n={12} />
       </div>
 

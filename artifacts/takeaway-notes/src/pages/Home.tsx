@@ -1,15 +1,7 @@
 const IMG = (name: string) => `${import.meta.env.BASE_URL}images/${name}`;
 
-const Illus = ({ src, alt, h, wide }: { src: string; alt: string; h: number; wide?: boolean }) => (
-  <div style={{
-    width: wide ? "calc(100% + 120px)" : "100%",
-    marginLeft: wide ? -60 : 0,
-    marginRight: wide ? -60 : 0,
-    marginTop: 14,
-    marginBottom: 14,
-    display: "flex",
-    justifyContent: "center",
-  }}>
+const Illus = ({ src, alt, h }: { src: string; alt: string; h: number }) => (
+  <div style={{ width: "100%", display: "flex", justifyContent: "center", margin: "14px 0" }}>
     <img src={src} alt={alt} style={{ maxHeight: h, maxWidth: "100%", objectFit: "contain", display: "block" }} />
   </div>
 );
@@ -161,7 +153,7 @@ export default function Home() {
         </div>
         <Illus src={IMG("page3.png")} alt="Bad Approach vs Better Approach" h={370} />
         <hr className="sub-divider" />
-        <Illus src={IMG("forpage3.png")} alt="Pathway 1: Win the Argument vs Pathway 2: Win the Friend" h={260} wide />
+        <Illus src={IMG("forpage3.png")} alt="Pathway 1: Win the Argument vs Pathway 2: Win the Friend" h={260} />
         <PageFooter n={3} />
       </div>
 
@@ -190,7 +182,7 @@ export default function Home() {
         </div>
         <Illus src={IMG("image72.png")} alt="Brain trying to dismantle vs Heart trying to understand" h={240} />
         <hr className="sub-divider" />
-        <Illus src={IMG("forpage4.png")} alt="Reply Mode (Defensive) vs Understand Mode (Empathetic)" h={250} wide />
+        <Illus src={IMG("forpage4.png")} alt="Reply Mode (Defensive) vs Understand Mode (Empathetic)" h={250} />
         <PageFooter n={4} />
       </div>
 

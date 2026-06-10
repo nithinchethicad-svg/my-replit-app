@@ -152,6 +152,7 @@ export default function Home() {
           ]} />
         </div>
         <Illus src={IMG("page3.png")} alt="Bad Approach vs Better Approach" h={370} />
+        <hr className="sub-divider" />
         <Illus src={IMG("forpage3.png")} alt="Pathway 1: Win the Argument vs Pathway 2: Win the Friend" h={260} />
         <PageFooter n={3} />
       </div>
@@ -180,6 +181,7 @@ export default function Home() {
           ]} />
         </div>
         <Illus src={IMG("image72.png")} alt="Brain trying to dismantle vs Heart trying to understand" h={240} />
+        <hr className="sub-divider" />
         <Illus src={IMG("forpage4.png")} alt="Reply Mode (Defensive) vs Understand Mode (Empathetic)" h={250} />
         <PageFooter n={4} />
       </div>

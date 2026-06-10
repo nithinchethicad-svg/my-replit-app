@@ -232,9 +232,9 @@ export default function Home() {
             { t: "Treat Others with the Grace You'd Want", n: "Offer the same patience, kindness, and grace you would hope to receive if you were the one who had made a mistake." },
           ]} />
         </div>
-        <Illus src={IMG("forpage6.png")} alt="Guardian filters who goes in vs Guide leads everyone into church" h={240} />
+        <Illus src={IMG("forpage6.png")} alt="Guardian filters who goes in vs Guide leads everyone into church" h={210} />
         <hr className="sub-divider" />
-        <Illus src={IMG("image85.png")} alt="Pride distances vs Humility brings closer" h={230} />
+        <Illus src={IMG("image85.png")} alt="Pride distances vs Humility brings closer" h={155} />
         <PageFooter n={6} />
       </div>
 

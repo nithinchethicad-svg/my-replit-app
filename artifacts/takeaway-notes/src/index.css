@@ -416,14 +416,16 @@
   .a4-page {
     width: 210mm !important;
     min-height: 297mm !important;
-    max-height: 297mm !important;
-    overflow: hidden !important;
     box-shadow: none !important;
     border-radius: 0 !important;
     margin: 0 !important;
     padding: 14mm 16mm !important;
     page-break-after: always !important;
     break-after: page !important;
+    /* Prevent content from spilling across physical PDF pages */
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    overflow: visible !important;
     /* preserve background colours in print */
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;

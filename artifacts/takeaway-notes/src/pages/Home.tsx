@@ -1,586 +1,366 @@
 const IMG = (name: string) => `${import.meta.env.BASE_URL}images/${name}`;
 
-const IllustrationBox = ({ src, alt, height = 180 }: { src: string; alt: string; height?: number }) => (
+const Illus = ({ src, alt, h }: { src: string; alt: string; h: number }) => (
+  <div style={{ width: "100%", display: "flex", justifyContent: "center", margin: "14px 0" }}>
+    <img src={src} alt={alt} style={{ maxHeight: h, maxWidth: "100%", objectFit: "contain", display: "block" }} />
+  </div>
+);
+
+const Band = ({ title }: { title: string }) => (
+  <div className="section-band" style={{ marginBottom: 12 }}>
+    <div className="section-band-title" style={{ fontSize: 16 }}>{title}</div>
+  </div>
+);
+
+const Sub = ({ title }: { title: string }) => (
   <div style={{
-    width: "100%",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    margin: "12px 0",
-    padding: 0,
-  }}>
-    <img
-      src={src}
-      alt={alt}
-      style={{
-        maxHeight: height,
-        maxWidth: "100%",
-        objectFit: "contain",
-        display: "block",
-      }}
-    />
+    fontFamily: "'Playfair Display', serif", fontSize: 15, fontStyle: "italic",
+    fontWeight: 600, color: "#5C3A1E", margin: "6px 0 10px 0",
+    borderLeft: "3px solid #C89B3C", paddingLeft: 10,
+  }}>{title}</div>
+);
+
+const DosBox = ({ items }: { items: { t: string; n: string }[] }) => (
+  <div className="dos-box">
+    <div className="box-header dos-header"><span>✓</span> Do&apos;s</div>
+    {items.map((it, i) => (
+      <div key={i} style={i > 0 ? { borderTop: "1px solid #A8D5B5", paddingTop: 8, marginTop: 8 } : {}}>
+        <div className="item-label dos-item-label">{it.t}</div>
+        <div className="item-note">{it.n}</div>
+      </div>
+    ))}
   </div>
 );
 
-const SectionBand = ({ title }: { title: string }) => (
-  <div className="section-band">
-    <div className="section-band-title" style={{ fontSize: 17 }}>{title}</div>
+const DontsBox = ({ items }: { items: { t: string; n: string }[] }) => (
+  <div className="donts-box">
+    <div className="box-header donts-header"><span>✗</span> Don&apos;ts</div>
+    {items.map((it, i) => (
+      <div key={i} style={i > 0 ? { borderTop: "1px solid #E8A898", paddingTop: 8, marginTop: 8 } : {}}>
+        <div className="item-label donts-item-label">{it.t}</div>
+        <div className="item-note">{it.n}</div>
+      </div>
+    ))}
   </div>
 );
 
-const SubHead = ({ title }: { title: string }) => (
-  <div style={{ margin: "6px 0 4px 0" }}>
-    <div className="subsection-title">{title}</div>
+interface VerseProps { vref: string; children: React.ReactNode }
+const Verse = ({ vref, children }: VerseProps) => (
+  <div className="verse-box" style={{ marginBottom: 10 }}>
+    <div className="verse-ref">{vref}</div>
+    <div className="verse-text">{children}</div>
   </div>
+);
+
+const ReflLine = () => <div className="reflection-line" />;
+const Q = ({ q }: { q: string }) => (
+  <div style={{ marginBottom: 18 }}>
+    <div style={{ fontFamily: "Inter, sans-serif", fontSize: 11, fontWeight: 700, color: "#D4622A", letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 6 }}>{q}</div>
+    <ReflLine /><ReflLine /><ReflLine />
+  </div>
+);
+
+const PageFooter = ({ n }: { n?: number }) => (
+  <>
+    <div className="page-footer-rule" />
+    {n !== undefined && <div className="page-badge">Page {n}</div>}
+  </>
 );
 
 export default function Home() {
   return (
     <div className="document-bg">
 
-      {/* ─── PAGE 1: TITLE ONLY ─── */}
-      <div className="a4-page" style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", minHeight: 1123, textAlign: "center" }}>
-        {/* Decorative corner accents */}
-        <div style={{ position: "absolute", top: 28, left: 40, width: 56, height: 56, borderTop: "3px solid #C89B3C", borderLeft: "3px solid #C89B3C", borderRadius: "2px 0 0 0" }} />
-        <div style={{ position: "absolute", top: 28, right: 40, width: 56, height: 56, borderTop: "3px solid #C89B3C", borderRight: "3px solid #C89B3C", borderRadius: "0 2px 0 0" }} />
-        <div style={{ position: "absolute", bottom: 40, left: 40, width: 56, height: 56, borderBottom: "3px solid #C89B3C", borderLeft: "3px solid #C89B3C", borderRadius: "0 0 0 2px" }} />
-        <div style={{ position: "absolute", bottom: 40, right: 40, width: 56, height: 56, borderBottom: "3px solid #C89B3C", borderRight: "3px solid #C89B3C", borderRadius: "0 0 2px 0" }} />
-
-        {/* Hero illustration */}
-        <div style={{ width: "80%", marginBottom: 36 }}>
-          <img
-            src={IMG("image35.png")}
-            alt="Should I bring up Jesus — awkward group scene"
-            style={{ width: "100%", objectFit: "contain", display: "block" }}
-          />
+      {/* ═══ TITLE PAGE (unnumbered) ═══ */}
+      <div className="a4-page" style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", textAlign: "center" }}>
+        <div style={{ position: "absolute", top: 28, left: 40, width: 56, height: 56, borderTop: "3px solid #C89B3C", borderLeft: "3px solid #C89B3C" }} />
+        <div style={{ position: "absolute", top: 28, right: 40, width: 56, height: 56, borderTop: "3px solid #C89B3C", borderRight: "3px solid #C89B3C" }} />
+        <div style={{ position: "absolute", bottom: 40, left: 40, width: 56, height: 56, borderBottom: "3px solid #C89B3C", borderLeft: "3px solid #C89B3C" }} />
+        <div style={{ position: "absolute", bottom: 40, right: 40, width: 56, height: 56, borderBottom: "3px solid #C89B3C", borderRight: "3px solid #C89B3C" }} />
+        <div style={{ width: "78%", marginBottom: 32 }}>
+          <img src={IMG("image35.png")} alt="Awkward group scene" style={{ width: "100%", objectFit: "contain", display: "block" }} />
         </div>
-
-        {/* Title */}
-        <div style={{ marginBottom: 10 }}>
-          <div className="display-title" style={{ fontSize: 52, textAlign: "center" }}>Good News,</div>
-          <div className="display-title" style={{ fontSize: 52, color: "#D4622A", textAlign: "center" }}>Bad Approach.</div>
+        <div style={{ marginBottom: 8 }}>
+          <div className="display-title" style={{ fontSize: 52 }}>Good News,</div>
+          <div className="display-title" style={{ fontSize: 52, color: "#D4622A" }}>Bad Approach.</div>
         </div>
-
-        {/* Subtitle */}
-        <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, fontStyle: "italic", color: "#5C3A1E", lineHeight: 1.5, marginBottom: 36 }}>
-          The Do's, Don'ts, and Awkward Moments
+        <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, fontStyle: "italic", color: "#5C3A1E", marginBottom: 32 }}>
+          The Do&apos;s, Don&apos;ts, and Awkward Moments
         </div>
-
-        {/* Decorative rule */}
-        <div style={{ width: 120, height: 1, background: "linear-gradient(90deg, transparent, #C89B3C, transparent)", marginBottom: 24 }} />
-
-        {/* Org + date */}
-        <div style={{ fontFamily: "Inter, sans-serif", fontSize: 13, fontWeight: 600, color: "#8B6340", letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 6 }}>
-          Freedom Yuva
-        </div>
-        <div style={{ fontFamily: "Inter, sans-serif", fontSize: 12, color: "#8B6340", letterSpacing: "0.06em" }}>
-          14 June 2026
-        </div>
-
-        <div className="page-footer-rule" />
+        <div style={{ width: 120, height: 1, background: "linear-gradient(90deg, transparent, #C89B3C, transparent)", marginBottom: 20 }} />
+        <div style={{ fontFamily: "Inter, sans-serif", fontSize: 13, fontWeight: 600, color: "#8B6340", letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 6 }}>Freedom Yuva</div>
+        <div style={{ fontFamily: "Inter, sans-serif", fontSize: 12, color: "#8B6340" }}>14 June 2026</div>
+        <PageFooter />
       </div>
 
-      {/* ─── PAGE 1: DISCUSSION + GREAT COMMISSION ─── */}
+      {/* ═══ PAGE 1: DISCUSSION & REFLECTION ═══ */}
       <div className="a4-page">
         <div style={{ marginBottom: 20 }}>
           <div className="section-num" style={{ marginBottom: 6 }}>Before We Begin</div>
-          <div className="section-title" style={{ fontSize: 24 }}>Discussion &amp; Reflection</div>
+          <div className="section-title" style={{ fontSize: 26 }}>Discussion &amp; Reflection</div>
           <div style={{ width: 48, height: 2, backgroundColor: "#D4622A", marginTop: 8 }} />
         </div>
-
-        <div style={{ marginBottom: 16 }}>
-          <div style={{ fontFamily: "Inter, sans-serif", fontSize: 11.5, fontWeight: 700, color: "#D4622A", letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 6 }}>
-            Q1 — Have you ever actually tried sharing the Gospel with someone? How did you go about it?
-          </div>
-          <div className="reflection-line" />
-          <div className="reflection-line" />
+        <Q q="Q1 — Have you ever actually tried sharing the Gospel with someone? How did you go about it?" />
+        <Q q="Q2 — If you're hesitant, what's stopping you? If you have, what challenges did you push through?" />
+        <Q q="Q3 — If someone has ever tried sharing the Gospel with you, what did you like about it, and what totally annoyed or frustrated you?" />
+        <div style={{ marginTop: 24, marginBottom: 8 }}>
+          <div style={{ fontFamily: "Inter, sans-serif", fontSize: 10.5, fontWeight: 700, color: "#8B6340", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>Additional Notes</div>
+          <ReflLine /><ReflLine /><ReflLine /><ReflLine /><ReflLine /><ReflLine />
         </div>
-        <div style={{ marginBottom: 16 }}>
-          <div style={{ fontFamily: "Inter, sans-serif", fontSize: 11.5, fontWeight: 700, color: "#D4622A", letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 6 }}>
-            Q2 — If you're hesitant, what's stopping you? If you have, what challenges did you push through?
-          </div>
-          <div className="reflection-line" />
-          <div className="reflection-line" />
-        </div>
-        <div style={{ marginBottom: 20 }}>
-          <div style={{ fontFamily: "Inter, sans-serif", fontSize: 11.5, fontWeight: 700, color: "#D4622A", letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 6 }}>
-            Q3 — If someone has ever tried sharing the Gospel with you, what did you like about it, and what totally annoyed or frustrated you?
-          </div>
-          <div className="reflection-line" />
-          <div className="reflection-line" />
-        </div>
-
         <div className="ornament">— ✦ —</div>
+        <PageFooter n={1} />
+      </div>
 
-        <SectionBand title="The Great Commission: Why We Need to Share the Gospel" />
-
-        <div className="verse-box" style={{ marginBottom: 10 }}>
-          <div className="verse-ref">Mark 16:15</div>
-          <div className="verse-text">"And then he told them, "Go into all the world and preach the Good News to everyone.""</div>
-        </div>
-
-        {/* Crossroads — half-page image, no background */}
-        <IllustrationBox src={IMG("image55.png")} alt="The crossroads: Stay Silent or Step Forward" height={210} />
-
-        <div style={{ marginTop: 10 }}>
+      {/* ═══ PAGE 2: GREAT COMMISSION + FEARS ═══ */}
+      <div className="a4-page">
+        <Band title="The Great Commission: Why We Need to Share the Gospel" />
+        <Verse vref="Mark 16:15">
+          &ldquo;And then he told them, &lsquo;Go into all the world and preach the Good News to everyone.&rsquo;&rdquo;
+        </Verse>
+        <Illus src={IMG("image55.png")} alt="Crossroads: Stay Silent or Step Forward" h={230} />
+        <div style={{ marginTop: 10, marginBottom: 8 }}>
           <div style={{ fontFamily: "Inter, sans-serif", fontSize: 11, fontWeight: 700, color: "#5C3A1E", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }}>Common Challenges &amp; Fears</div>
-          <div className="fear-chip">
-            <div className="fear-chip-title">Fear of Being "That Guy"</div>
-            <div className="fear-chip-text">The gut-level fear of being the person who kills the vibe — looking like you're trying too hard or don't know how to act in a normal social setting.</div>
-          </div>
-          <div className="fear-chip">
-            <div className="fear-chip-title">Fear of Being Labeled a Preacher or Priest</div>
-            <div className="fear-chip-text">The cringe factor of being put in a box — you share something spiritual and people instantly categorize you, creating distance and turning friendship into something heavy and awkward.</div>
-          </div>
-          <div className="fear-chip">
-            <div className="fear-chip-title">Fear of the Unknown / Unanswerable</div>
-            <div className="fear-chip-text">The "what if they ask me something I can't answer?" panic — being stumped by a tough question makes you feel foolish and harms the credibility of your message.</div>
-          </div>
-          <div className="fear-chip">
-            <div className="fear-chip-title">The "Cancel Culture" Fear</div>
-            <div className="fear-chip-text">Standing up for your convictions might get you "cancelled." You're afraid holding a firm belief will make you a target, so you stay silent to keep the peace.</div>
-          </div>
-          <div className="fear-chip">
-            <div className="fear-chip-title">The "Hidden Agenda" Worry</div>
-            <div className="fear-chip-text">Your friends might think you're only hanging out to "convert" them — that your motives will be questioned and they'll feel like a project rather than a friend.</div>
-          </div>
+          {[
+            { t: "Fear of Being \"That Guy\"", b: "The gut-level fear of being the person who kills the vibe — looking like you're trying too hard or don't know how to act in a normal social setting." },
+            { t: "Fear of Being Labeled a Preacher or Priest", b: "The cringe factor of being put in a box — you share something spiritual and people instantly categorize you, creating distance and turning friendship into something heavy and awkward." },
+            { t: "Fear of the Unknown / Unanswerable", b: "The \"what if they ask me something I can't answer?\" panic — being stumped by a tough question makes you feel foolish and harms the credibility of your message." },
+            { t: "The \"Cancel Culture\" Fear", b: "Standing up for your convictions might get you cancelled. You're afraid holding a firm belief will make you a target, so you stay silent to keep the peace." },
+            { t: "The \"Hidden Agenda\" Worry", b: "Your friends might think you're only hanging out to convert them — that your motives will be questioned and they'll feel like a project rather than a friend." },
+          ].map((f, i) => (
+            <div key={i} className="fear-chip">
+              <div className="fear-chip-title">{f.t}</div>
+              <div className="fear-chip-text">{f.b}</div>
+            </div>
+          ))}
         </div>
-
-        <div className="page-footer-rule" />
-        <div className="page-badge">Page 1</div>
+        <PageFooter n={2} />
       </div>
 
-      {/* ─── PAGE 2: SECTION 2.1 ─── */}
+      {/* ═══ PAGE 3: §2.1 ═══ */}
       <div className="a4-page">
-        <SectionBand title="Win the Friend, Not the Argument" />
-        <SubHead title="Don't Fight the Dark, Just Bring the Light" />
-
-        <div className="verse-box" style={{ marginBottom: 10 }}>
-          <div className="verse-ref">Acts 17:22-23</div>
-          <div className="verse-text">"So Paul, standing before the council, addressed them as follows: "Men of Athens, I notice that you are very religious in every way, for as I was walking along I saw your many shrines. And one of your altars had this inscription on it: 'To an Unknown God.' This God, whom you worship without knowing, is the one I'm telling you about.""</div>
-        </div>
-
+        <Band title="Win the Friend, Not the Argument" />
+        <Sub title="Don't Fight the Dark, Just Bring the Light" />
+        <Verse vref="Acts 17:22-23">
+          &ldquo;Men of Athens, I notice that you are very religious in every way, for as I was walking along I saw your many shrines. And one of your altars had this inscription on it: &lsquo;To an Unknown God.&rsquo; This God, whom you worship without knowing, is the one I&apos;m telling you about.&rdquo;
+        </Verse>
         <div className="dos-donts-grid">
-          <div className="donts-box">
-            <div className="box-header donts-header"><span>✗</span> Don'ts</div>
-            <div style={{ marginBottom: 8 }}>
-              <div className="item-label donts-item-label">The "Wrong vs. Right" Power Play</div>
-              <div className="item-note">Avoid leading with how they are wrong and you are right. This shifts the focus to winning an argument rather than sharing a message.</div>
-            </div>
-            <div style={{ borderTop: "1px solid #E8A898", paddingTop: 8, marginBottom: 8 }}>
-              <div className="item-label donts-item-label">The "Offensive Approach"</div>
-              <div className="item-note">Do not be offensive. When you attack someone's current perspective, you build a wall instead of a bridge, causing them to shut down immediately.</div>
-            </div>
-            <div style={{ borderTop: "1px solid #E8A898", paddingTop: 8 }}>
-              <div className="item-label donts-item-label">The "Superiority Complex"</div>
-              <div className="item-note">Your job is not to prove they are bad or inferior. Acting morally superior alienates the very person you are trying to reach.</div>
-            </div>
-          </div>
-          <div className="dos-box">
-            <div className="box-header dos-header"><span>✓</span> Do's</div>
-            <div style={{ marginBottom: 8 }}>
-              <div className="item-label dos-item-label">Share Your Truth, Don't Defeat Theirs</div>
-              <div className="item-note">Your mission is simply to share your truth. Release the need to prove them wrong; focus on what you believe to be true.</div>
-            </div>
-            <div style={{ borderTop: "1px solid #A8D5B5", paddingTop: 8, marginBottom: 8 }}>
-              <div className="item-label dos-item-label">Anchor in Common Ground</div>
-              <div className="item-note">Find the common ground between your perspectives. Starting from a place where they can relate helps build rapport rather than conflict.</div>
-            </div>
-            <div style={{ borderTop: "1px solid #A8D5B5", paddingTop: 8 }}>
-              <div className="item-label dos-item-label">Build Bridges from Known Truths</div>
-              <div className="item-note">Identify the truths they already know and accept, then gently use those as stepping stones to lead them toward the whole truth.</div>
-            </div>
-          </div>
+          <DontsBox items={[
+            { t: "The \"Wrong vs. Right\" Power Play", n: "Avoid leading with how they are wrong and you are right. This shifts the focus to winning an argument rather than sharing a message." },
+            { t: "The \"Offensive Approach\"", n: "Do not be offensive. When you attack someone's current perspective, you build a wall instead of a bridge, causing them to shut down immediately." },
+            { t: "The \"Superiority Complex\"", n: "Your job is not to prove they are bad or inferior. Acting morally superior alienates the very person you are trying to reach." },
+          ]} />
+          <DosBox items={[
+            { t: "Share Your Truth, Don't Defeat Theirs", n: "Your mission is simply to share your truth. Release the need to prove them wrong; focus on what you believe to be true." },
+            { t: "Anchor in Common Ground", n: "Find the common ground between your perspectives. Starting from a place where they can relate helps build rapport rather than conflict." },
+            { t: "Build Bridges from Known Truths", n: "Identify the truths they already know and accept, then gently use those as stepping stones to lead them toward the whole truth." },
+          ]} />
         </div>
-
-        {/* Bad Approach vs Better Approach — transparent background */}
-        <IllustrationBox src={IMG("image22.png")} alt="Bad Approach vs Better Approach" height={340} />
-
-        <div className="page-footer-rule" />
-        <div className="page-badge">Page 2</div>
+        <Illus src={IMG("image22.png")} alt="Bad Approach vs Better Approach" h={310} />
+        <PageFooter n={3} />
       </div>
 
-      {/* ─── PAGE 3: SECTION 2.2 ─── */}
+      {/* ═══ PAGE 4: §2.2 ═══ */}
       <div className="a4-page">
-        <SubHead title="Listen to Understand, Not to Reply" />
-
+        <Sub title="Listen to Understand, Not to Reply" />
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 }}>
-          <div className="verse-box" style={{ margin: 0 }}>
-            <div className="verse-ref">2 Timothy 2:23-24</div>
-            <div className="verse-text">"Again I say, don't get involved in foolish, ignorant arguments that only start fights. A servant of the Lord must not quarrel but must be kind to everyone, be able to teach, and be patient with difficult people."</div>
-          </div>
-          <div className="verse-box" style={{ margin: 0 }}>
-            <div className="verse-ref">James 1:19</div>
-            <div className="verse-text">"Understand this, my dear brothers and sisters: You must all be quick to listen, slow to speak, and slow to get angry."</div>
-          </div>
+          <Verse vref="2 Timothy 2:23-24">
+            &ldquo;Again I say, don&apos;t get involved in foolish, ignorant arguments that only start fights. A servant of the Lord must not quarrel but must be kind to everyone, be able to teach, and be patient with difficult people.&rdquo;
+          </Verse>
+          <Verse vref="James 1:19">
+            &ldquo;Understand this, my dear brothers and sisters: You must all be quick to listen, slow to speak, and slow to get angry.&rdquo;
+          </Verse>
         </div>
-
         <div className="dos-donts-grid">
-          <div className="donts-box">
-            <div className="box-header donts-header"><span>✗</span> Don'ts</div>
-            <div style={{ marginBottom: 8 }}>
-              <div className="item-label donts-item-label">Listening to Find Holes or Mistakes</div>
-              <div className="item-note">Treating their words as ammunition rather than as part of a conversation.</div>
-            </div>
-            <div style={{ borderTop: "1px solid #E8A898", paddingTop: 8, marginBottom: 8 }}>
-              <div className="item-label donts-item-label">Making Them Feel Inferior</div>
-              <div className="item-note">Using what someone shares to highlight their mistakes makes them regret opening up.</div>
-            </div>
-            <div style={{ borderTop: "1px solid #E8A898", paddingTop: 8 }}>
-              <div className="item-label donts-item-label">Listening to Win an Argument</div>
-              <div className="item-note">Listening only to structure a rebuttal ignores the person's humanity entirely.</div>
-            </div>
-          </div>
-          <div className="dos-box">
-            <div className="box-header dos-header"><span>✓</span> Do's</div>
-            <div style={{ marginBottom: 8 }}>
-              <div className="item-label dos-item-label">Seek to Understand Their Perspective</div>
-              <div className="item-note">Listen with the goal of discovering why they believe what they believe.</div>
-            </div>
-            <div style={{ borderTop: "1px solid #A8D5B5", paddingTop: 8, marginBottom: 8 }}>
-              <div className="item-label dos-item-label">Focus on the Heart and Situation</div>
-              <div className="item-note">Look beyond the surface to understand what they are going through in their current reality.</div>
-            </div>
-            <div style={{ borderTop: "1px solid #A8D5B5", paddingTop: 8 }}>
-              <div className="item-label dos-item-label">Prioritize Empathy over Debate</div>
-              <div className="item-note">True listening is about building understanding and rapport, not correcting or fighting back.</div>
-            </div>
-          </div>
+          <DontsBox items={[
+            { t: "Listening to Find Holes or Mistakes", n: "Treating their words as ammunition rather than as part of a conversation." },
+            { t: "Making Them Feel Inferior", n: "Using what someone shares to highlight their mistakes makes them regret opening up." },
+            { t: "Listening to Win an Argument", n: "Listening only to structure a rebuttal ignores the person's humanity entirely." },
+          ]} />
+          <DosBox items={[
+            { t: "Seek to Understand Their Perspective", n: "Listen with the goal of discovering why they believe what they believe." },
+            { t: "Focus on the Heart and Situation", n: "Look beyond the surface to understand what they are going through in their current reality." },
+            { t: "Prioritize Empathy over Debate", n: "True listening is about building understanding and rapport, not correcting or fighting back." },
+          ]} />
         </div>
-
-        {/* Brain vs Heart */}
-        <IllustrationBox src={IMG("image72.png")} alt="Brain trying to dismantle vs Heart trying to understand" height={210} />
-
-        <hr className="sub-divider" />
-        <SubHead title="Love Your Friends, Lose the Lecture" />
-
-        <div className="verse-box" style={{ marginBottom: 10 }}>
-          <div className="verse-ref">1 John 3:16-18</div>
-          <div className="verse-text">"...If someone has enough money to live well and sees a brother or sister in need but shows no compassion — how can God's love be in that person? Dear children, let's not merely say that we love each other; let us show the truth by our actions."</div>
-        </div>
-
-        <div className="dos-donts-grid">
-          <div className="donts-box">
-            <div className="box-header donts-header"><span>✗</span> Don'ts</div>
-            <div style={{ marginBottom: 8 }}>
-              <div className="item-label donts-item-label">Prioritizing Lectures over Genuine Support</div>
-              <div className="item-note">When a friend is in need, immediately lecturing them about faith ignores their reality and creates a barrier.</div>
-            </div>
-            <div style={{ borderTop: "1px solid #E8A898", paddingTop: 8, marginBottom: 8 }}>
-              <div className="item-label donts-item-label">Words as a Substitute for Action</div>
-              <div className="item-note">Filling a need with spiritual talk instead of practical help feels dismissive and insincere.</div>
-            </div>
-            <div style={{ borderTop: "1px solid #E8A898", paddingTop: 8 }}>
-              <div className="item-label donts-item-label">Missing the Chance to Truly Connect</div>
-              <div className="item-note">Lecturing instead of offering a helping hand prevents you from reflecting the love you're trying to share.</div>
-            </div>
-          </div>
-          <div className="dos-box">
-            <div className="box-header dos-header"><span>✓</span> Do's</div>
-            <div style={{ marginBottom: 8 }}>
-              <div className="item-label dos-item-label">Demonstrate Love Through Action First</div>
-              <div className="item-note">Before speaking about God's love, demonstrate it by meeting physical, emotional, or financial needs.</div>
-            </div>
-            <div style={{ borderTop: "1px solid #A8D5B5", paddingTop: 8, marginBottom: 8 }}>
-              <div className="item-label dos-item-label">Provide the Support They Actually Need</div>
-              <div className="item-note">Be the person who offers a helping hand, a listening ear, or a supportive presence in their specific situation.</div>
-            </div>
-            <div style={{ borderTop: "1px solid #A8D5B5", paddingTop: 8 }}>
-              <div className="item-label dos-item-label">Let Your Actions Speak Louder Than Words</div>
-              <div className="item-note">Words alone rarely help in crisis. Serving your friend first creates the bridge of trust necessary for your message to be heard.</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Correct words wrong moment vs Love first truth later */}
-        <IllustrationBox src={IMG("image67.png")} alt="Correct words, wrong moment vs Love first, truth later" height={190} />
-
-        <div className="page-footer-rule" />
-        <div className="page-badge">Page 3</div>
+        <Illus src={IMG("image72.png")} alt="Brain trying to dismantle vs Heart trying to understand" h={310} />
+        <PageFooter n={4} />
       </div>
 
-      {/* ─── PAGE 4: SECTION 3.1 ─── */}
+      {/* ═══ PAGE 5: §2.3 ═══ */}
       <div className="a4-page">
-        <SectionBand title="Less Judgment, More Approachability" />
-        <SubHead title="Battling Spiritual Pride, Showing Empathy" />
+        <Sub title="Love Your Friends, Lose the Lecture" />
+        <Verse vref="1 John 3:16-18">
+          &ldquo;If someone has enough money to live well and sees a brother or sister in need but shows no compassion — how can God&apos;s love be in that person? Dear children, let&apos;s not merely say that we love each other; let us show the truth by our actions.&rdquo;
+        </Verse>
+        <div className="dos-donts-grid">
+          <DontsBox items={[
+            { t: "Prioritizing Lectures over Genuine Support", n: "When a friend is in need, immediately lecturing them about faith ignores their reality and creates a barrier." },
+            { t: "Words as a Substitute for Action", n: "Filling a need with spiritual talk instead of practical help feels dismissive and insincere." },
+            { t: "Missing the Chance to Truly Connect", n: "Lecturing instead of offering a helping hand prevents you from reflecting the love you're trying to share." },
+          ]} />
+          <DosBox items={[
+            { t: "Demonstrate Love Through Action First", n: "Before speaking about God's love, demonstrate it by meeting physical, emotional, or financial needs." },
+            { t: "Provide the Support They Actually Need", n: "Be the person who offers a helping hand, a listening ear, or a supportive presence in their specific situation." },
+            { t: "Let Your Actions Speak Louder Than Words", n: "Words alone rarely help in crisis. Serving your friend first creates the bridge of trust necessary for your message to be heard." },
+          ]} />
+        </div>
+        <Illus src={IMG("image67.png")} alt="Correct words wrong moment vs Love first truth later" h={310} />
+        <PageFooter n={5} />
+      </div>
 
+      {/* ═══ PAGE 6: §3.1 ═══ */}
+      <div className="a4-page">
+        <Band title="Less Judgment, More Approachability" />
+        <Sub title="Battling Spiritual Pride, Showing Empathy" />
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 }}>
-          <div className="verse-box" style={{ margin: 0 }}>
-            <div className="verse-ref">Luke 18:10-14</div>
-            <div className="verse-text">"...The Pharisee stood by himself and prayed: 'I thank you, God, that I am not like other people...' But the tax collector stood at a distance... saying, 'O God, be merciful to me, for I am a sinner.' I tell you, this sinner, not the Pharisee, returned home justified before God."</div>
-          </div>
-          <div className="verse-box" style={{ margin: 0 }}>
-            <div className="verse-ref">Ephesians 4:2</div>
-            <div className="verse-text">"Always be humble and gentle. Be patient with each other, making allowance for each other's faults because of your love."</div>
-          </div>
+          <Verse vref="Luke 18:10-14">
+            &ldquo;The Pharisee stood by himself and prayed: &lsquo;I thank you, God, that I am not like other people...&rsquo; But the tax collector stood at a distance saying, &lsquo;O God, be merciful to me, for I am a sinner.&rsquo; I tell you, this sinner, not the Pharisee, returned home justified before God.&rdquo;
+          </Verse>
+          <Verse vref="Ephesians 4:2">
+            &ldquo;Always be humble and gentle. Be patient with each other, making allowance for each other&apos;s faults because of your love.&rdquo;
+          </Verse>
         </div>
-
         <div className="dos-donts-grid">
-          <div className="donts-box">
-            <div className="box-header donts-header"><span>✗</span> Don'ts</div>
-            <div style={{ marginBottom: 8 }}>
-              <div className="item-label donts-item-label">Thinking You Are Better Than Others</div>
-              <div className="item-note">Acting like a modern-day Pharisee creates an immediate barrier that makes you completely unapproachable.</div>
-            </div>
-            <div style={{ borderTop: "1px solid #E8A898", paddingTop: 8, marginBottom: 8 }}>
-              <div className="item-label donts-item-label">Forgetting That You Are Also a Sinner</div>
-              <div className="item-note">When you lose sight of the fact that you're saved by grace, not your own achievement, you become judgmental.</div>
-            </div>
-            <div style={{ borderTop: "1px solid #E8A898", paddingTop: 8 }}>
-              <div className="item-label donts-item-label">Ignoring Their Circumstances</div>
-              <div className="item-note">Failing to acknowledge that without God's protection, you could have easily ended up in a worse situation.</div>
-            </div>
-          </div>
-          <div className="dos-box">
-            <div className="box-header dos-header"><span>✓</span> Do's</div>
-            <div style={{ marginBottom: 8 }}>
-              <div className="item-label dos-item-label">Cultivate a Humble Heart Condition</div>
-              <div className="item-note">Always maintain the awareness that you are no better than anyone else — your standing is a gift, not an achievement.</div>
-            </div>
-            <div style={{ borderTop: "1px solid #A8D5B5", paddingTop: 8, marginBottom: 8 }}>
-              <div className="item-label dos-item-label">Practice Empathy by Imagining Yourself in Their Place</div>
-              <div className="item-note">Consider how you might have acted if you were in their specific situation — this moves you from judgment to empathy.</div>
-            </div>
-            <div style={{ borderTop: "1px solid #A8D5B5", paddingTop: 8 }}>
-              <div className="item-label dos-item-label">Treat Others with the Grace You'd Want</div>
-              <div className="item-note">Offer the same patience, kindness, and grace you would hope to receive if you were the one who had made a mistake.</div>
-            </div>
-          </div>
+          <DontsBox items={[
+            { t: "Thinking You Are Better Than Others", n: "Acting like a modern-day Pharisee creates an immediate barrier that makes you completely unapproachable." },
+            { t: "Forgetting That You Are Also a Sinner", n: "When you lose sight of the fact that you're saved by grace, not your own achievement, you become judgmental." },
+            { t: "Ignoring Their Circumstances", n: "Failing to acknowledge that without God's protection, you could have easily ended up in a worse situation." },
+          ]} />
+          <DosBox items={[
+            { t: "Cultivate a Humble Heart Condition", n: "Always maintain the awareness that you are no better than anyone else — your standing is a gift, not an achievement." },
+            { t: "Practice Empathy — Imagine Yourself in Their Place", n: "Consider how you might have acted if you were in their specific situation — this moves you from judgment to empathy." },
+            { t: "Treat Others with the Grace You'd Want", n: "Offer the same patience, kindness, and grace you would hope to receive if you were the one who had made a mistake." },
+          ]} />
         </div>
-
-        {/* Pride distances vs Humility brings closer */}
-        <IllustrationBox src={IMG("image85.png")} alt="Pride distances us from others vs Humility brings us closer" height={360} />
-
-        <div className="page-footer-rule" />
-        <div className="page-badge">Page 4</div>
+        <Illus src={IMG("image85.png")} alt="Pride distances vs Humility brings closer" h={320} />
+        <PageFooter n={6} />
       </div>
 
-      {/* ─── PAGE 5: SECTIONS 3.2 + 3.3 ─── */}
+      {/* ═══ PAGE 7: §3.2 ═══ */}
       <div className="a4-page">
-        <SubHead title="High Standards, Low Bridges" />
-
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 10 }}>
-          <div className="verse-box" style={{ margin: 0 }}>
-            <div className="verse-ref">Jude 1:22-23</div>
-            <div className="verse-text">"And you must show mercy to those whose faith is wavering. Rescue others by snatching them from the flames of judgment. Show mercy to still others, but do so with great caution, hating the sins that contaminate their lives."</div>
-          </div>
-          <div className="verse-box" style={{ margin: 0 }}>
-            <div className="verse-ref">Galatians 6:1</div>
-            <div className="verse-text">"Dear brothers and sisters, if another believer is overcome by some sin, you who are godly should gently and humbly help that person back onto the right path. And be careful not to fall into the same temptation yourself."</div>
-          </div>
-        </div>
-
-        <div className="dos-donts-grid">
-          <div className="donts-box">
-            <div className="box-header donts-header"><span>✗</span> Don'ts</div>
-            <div style={{ marginBottom: 8 }}>
-              <div className="item-label donts-item-label">Gatekeeping with High Standards</div>
-              <div className="item-note">Forcing your personal, high standards onto outsiders or new believers builds an inaccessible wall.</div>
-            </div>
-            <div style={{ borderTop: "1px solid #E8A898", paddingTop: 8 }}>
-              <div className="item-label donts-item-label">Conditional Mingling</div>
-              <div className="item-note">Only hanging out with, helping, or welcoming people if they already measure up to a certain spiritual or moral level.</div>
-            </div>
-          </div>
-          <div className="dos-box">
-            <div className="box-header dos-header"><span>✓</span> Do's</div>
-            <div style={{ marginBottom: 8 }}>
-              <div className="item-label dos-item-label">Keep Your Standards High, but the Bridge Low</div>
-              <div className="item-note">Hold yourself to the highest personal standards of faith and integrity, but make sure the bridge you build outward is flat, wide, and easy for anyone to walk across.</div>
-            </div>
-            <div style={{ borderTop: "1px solid #A8D5B5", paddingTop: 8 }}>
-              <div className="item-label dos-item-label">Create a Safe Space for the Vulnerable</div>
-              <div className="item-note">Intentionally allow the weak, wavering, and vulnerable to approach you exactly as they are — no pressure to "fake it" or live up to a standard they aren't ready for.</div>
-            </div>
-          </div>
-        </div>
-
-        {/* High Standards High Barriers vs Low Bridges */}
-        <IllustrationBox src={IMG("image83.png")} alt="High Standards High Barriers vs High Standards Low Bridges" height={200} />
-
-        <hr className="sub-divider" />
-        <SubHead title="Set Apart, Not Pulled Apart" />
-
-        <div className="verse-box" style={{ marginBottom: 10 }}>
-          <div className="verse-ref">1 Corinthians 9:20-23</div>
-          <div className="verse-text">"...When I am with those who are weak, I share their weakness, for I want to bring the weak to Christ. Yes, I try to find common ground with everyone, doing everything I can to save some. I do everything to spread the Good News and share in its blessings."</div>
-        </div>
-
-        <div className="dos-donts-grid">
-          <div className="donts-box">
-            <div className="box-header donts-header"><span>✗</span> Don'ts</div>
-            <div style={{ marginBottom: 8 }}>
-              <div className="item-label donts-item-label">Becoming Unrelatable</div>
-              <div className="item-note">Avoid becoming so different or radical in your lifestyle that you become completely unrelatable. When you act like an alien, others feel you can't understand their struggles.</div>
-            </div>
-            <div style={{ borderTop: "1px solid #E8A898", paddingTop: 8 }}>
-              <div className="item-label donts-item-label">Forcing a Personality Change</div>
-              <div className="item-note">Don't make people feel like they have to change their entire personality, vocabulary, or hobbies to hang out with you or become a Christian.</div>
-            </div>
-          </div>
-          <div className="dos-box">
-            <div className="box-header dos-header"><span>✓</span> Do's</div>
-            <div style={{ marginBottom: 8 }}>
-              <div className="item-label dos-item-label">Mingle with the World, Not with Sin</div>
-              <div className="item-note">Be present in the spaces and lives of unbelievers — just draw the line at participating in sin.</div>
-            </div>
-            <div style={{ borderTop: "1px solid #A8D5B5", paddingTop: 8 }}>
-              <div className="item-label dos-item-label">Accept the Person, Reject the Sin</div>
-              <div className="item-note">Walk the fine line of being deeply loving and accepting of everyone without compromising your convictions.</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Balancing beam: Isolation vs Compromise vs Christ-like Presence */}
-        <IllustrationBox src={IMG("image87.png")} alt="Balancing beam: Isolation — Christ-like Presence — Compromise" height={300} />
-
-        <div className="page-footer-rule" />
-        <div className="page-badge">Page 5</div>
-      </div>
-
-      {/* ─── PAGE 6: SECTION 4.1 ─── */}
-      <div className="a4-page">
-        <SectionBand title="Drawing People with God's Love, Not the Fear of Hell" />
-        <SubHead title="Being the First Gospel Your Friends See" />
-
+        <Sub title="High Standards, Low Bridges" />
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 }}>
-          <div className="verse-box" style={{ margin: 0 }}>
-            <div className="verse-ref">Matthew 5:16</div>
-            <div className="verse-text">"In the same way, let your good deeds shine out for all to see, so that everyone will praise your heavenly Father."</div>
-          </div>
-          <div className="verse-box" style={{ margin: 0 }}>
-            <div className="verse-ref">John 13:35</div>
-            <div className="verse-text">"Your love for one another will prove to the world that you are my disciples."</div>
-          </div>
+          <Verse vref="Jude 1:22-23">
+            &ldquo;And you must show mercy to those whose faith is wavering. Rescue others by snatching them from the flames of judgment. Show mercy to still others, but do so with great caution, hating the sins that contaminate their lives.&rdquo;
+          </Verse>
+          <Verse vref="Galatians 6:1">
+            &ldquo;Dear brothers and sisters, if another believer is overcome by some sin, you who are godly should gently and humbly help that person back onto the right path. And be careful not to fall into the same temptation yourself.&rdquo;
+          </Verse>
         </div>
-
         <div className="dos-donts-grid">
-          <div className="donts-box">
-            <div className="box-header donts-header"><span>✗</span> Don'ts</div>
-            <div style={{ marginBottom: 8 }}>
-              <div className="item-label donts-item-label">Living Hypocritically</div>
-              <div className="item-note">Avoid preaching love, kindness, and grace if your everyday life doesn't reflect those values. When your lifestyle contradicts your message, Christianity looks like hypocrisy to outsiders.</div>
-            </div>
-            <div style={{ borderTop: "1px solid #E8A898", paddingTop: 8 }}>
-              <div className="item-label donts-item-label">Words Before Witness</div>
-              <div className="item-note">Do not rely on vocal preaching before you have established a living testimony. Speaking truth without a matching lifestyle pushes people away.</div>
-            </div>
-          </div>
-          <div className="dos-box">
-            <div className="box-header dos-header"><span>✓</span> Do's</div>
-            <div style={{ marginBottom: 8 }}>
-              <div className="item-label dos-item-label">Let Your Life Be the First Bible They Read</div>
-              <div className="item-note">Before your friends ever open a Bible, they are reading your life. Show them what Christianity looks like through your character, habits, and reactions.</div>
-            </div>
-            <div style={{ borderTop: "1px solid #A8D5B5", paddingTop: 8 }}>
-              <div className="item-label dos-item-label">Let Your Lifestyle Create Holy Envy</div>
-              <div className="item-note">Live so that the peace, joy, and love in your life naturally attract others to God. When people genuinely want what you have, your faith explanation becomes far more effective.</div>
-            </div>
-          </div>
+          <DontsBox items={[
+            { t: "Gatekeeping with High Standards", n: "Forcing your personal, high standards onto outsiders or new believers — when you expect people to completely change before they can relate to you, you build an inaccessible wall." },
+            { t: "Conditional Mingling", n: "Only hanging out with, helping, or welcoming people if they already measure up to a certain spiritual or moral level." },
+          ]} />
+          <DosBox items={[
+            { t: "Keep Your Standards High, but the Bridge Low", n: "Hold yourself to the highest personal standards of faith and integrity, but make sure the bridge you build outward is flat, wide, and easy for anyone to walk across." },
+            { t: "Create a Safe Space for the Vulnerable", n: "Intentionally allow the weak, wavering, and vulnerable to approach you exactly as they are — no pressure to live up to a standard they aren't ready for." },
+          ]} />
         </div>
-
-        {/* Posting Faith but Ignoring Pain vs Sitting in Love Like Christ Did */}
-        <IllustrationBox src={IMG("image78.png")} alt="Posting Faith but ignoring pain vs Sitting in love like Christ did" height={340} />
-
-        <div className="page-footer-rule" />
-        <div className="page-badge">Page 6</div>
+        <Illus src={IMG("image83.png")} alt="High Standards High Barriers vs Low Bridges" h={320} />
+        <PageFooter n={7} />
       </div>
 
-      {/* ─── PAGE 7: SECTION 4.2 + 4.3 ─── */}
+      {/* ═══ PAGE 8: §3.3 ═══ */}
       <div className="a4-page">
-        <SubHead title="Spirit Led, Not Knowledge Driven" />
-
-        <div className="verse-box" style={{ marginBottom: 10 }}>
-          <div className="verse-ref">1 Corinthians 2:1-5</div>
-          <div className="verse-text">"When I first came to you, dear brothers and sisters, I didn't use lofty words and impressive wisdom to tell you God's secret plan... Rather than using clever and persuasive speeches, I relied only on the power of the Holy Spirit. I did this so you would not trust in human wisdom but in the power of God."</div>
-        </div>
-
+        <Sub title="Set Apart, Not Pulled Apart" />
+        <Verse vref="1 Corinthians 9:20-23">
+          &ldquo;When I am with those who are weak, I share their weakness, for I want to bring the weak to Christ. Yes, I try to find common ground with everyone, doing everything I can to save some. I do everything to spread the Good News and share in its blessings.&rdquo;
+        </Verse>
         <div className="dos-donts-grid">
-          <div className="donts-box">
-            <div className="box-header donts-header"><span>✗</span> Don'ts</div>
-            <div style={{ marginBottom: 8 }}>
-              <div className="item-label donts-item-label">Relying on Intellectual Arguments</div>
-              <div className="item-note">Avoid relying purely on facts, archaeology, or high philosophy to prove God is real. These things appeal to the intellect but rarely change a person's heart or create a longing for Jesus.</div>
-            </div>
-            <div style={{ borderTop: "1px solid #E8A898", paddingTop: 8 }}>
-              <div className="item-label donts-item-label">Overcomplicating the Simplicity of the Cross</div>
-              <div className="item-note">Relying heavily on "clever speeches" distracts people with side arguments rather than keeping focus on Jesus.</div>
-            </div>
-          </div>
-          <div className="dos-box">
-            <div className="box-header dos-header"><span>✓</span> Do's</div>
-            <div style={{ marginBottom: 8 }}>
-              <div className="item-label dos-item-label">Rely on the Holy Spirit</div>
-              <div className="item-note">Make the Holy Spirit your primary reliance when sharing the Gospel. He fully knows and can penetrate the deep secrets of the human heart.</div>
-            </div>
-            <div style={{ borderTop: "1px solid #A8D5B5", paddingTop: 8 }}>
-              <div className="item-label dos-item-label">Target the Heart, Not Just the Brain</div>
-              <div className="item-note">Trust that the Holy Spirit can stir up a genuine, personal need for Christ in ways human wisdom and clever arguments never could.</div>
-            </div>
-          </div>
+          <DontsBox items={[
+            { t: "Becoming Unrelatable", n: "Avoid becoming so different or radical in your lifestyle that you become completely unrelatable. When you act like an alien, others feel you can't understand their struggles." },
+            { t: "Forcing a Personality Change", n: "Don't make people feel like they have to change their entire personality, vocabulary, or hobbies to hang out with you or become a Christian." },
+          ]} />
+          <DosBox items={[
+            { t: "Mingle with the World, Not with Sin", n: "Be present in the spaces and lives of unbelievers — just draw the line at participating in sin." },
+            { t: "Accept the Person, Reject the Sin", n: "Walk the fine line of being deeply loving and accepting of everyone without compromising your convictions." },
+          ]} />
         </div>
-
-        {/* What I think I need vs What God expects to bring */}
-        <IllustrationBox src={IMG("image86.png")} alt="What I think I need vs What God expects to bring" height={190} />
-
-        <hr className="sub-divider" />
-        <SubHead title="Trusting God's Call and His Timing" />
-
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 10 }}>
-          <div className="verse-box" style={{ margin: 0 }}>
-            <div className="verse-ref">John 6:44</div>
-            <div className="verse-text">"For no one can come to me unless the Father who sent me draws them to me, and at the last day I will raise them up."</div>
-          </div>
-          <div className="verse-box" style={{ margin: 0 }}>
-            <div className="verse-ref">1 Corinthians 3:6-7</div>
-            <div className="verse-text">"I planted the seed in your hearts, and Apollos watered it, but it was God who made it grow. It's not important who does the planting or who does the watering. What's important is that God makes it grow."</div>
-          </div>
-        </div>
-
-        <div className="dos-donts-grid">
-          <div className="donts-box">
-            <div className="box-header donts-header"><span>✗</span> Don'ts</div>
-            <div style={{ marginBottom: 8 }}>
-              <div className="item-label donts-item-label">Trying to Play the Savior in Your Own Strength</div>
-              <div className="item-note">Stop thinking that you can bring someone into salvation through your own strength, knowledge, or effort. Only God can save a person — do not try to take on His role or force a spiritual outcome.</div>
-            </div>
-            <div style={{ borderTop: "1px solid #E8A898", paddingTop: 8 }}>
-              <div className="item-label donts-item-label">Overstepping Your Bounds and Pushing People Away</div>
-              <div className="item-note">Avoid pushing beyond what God has asked you to do. If you keep forcing the issue out of anxiety, you risk pushing them away from better help later on.</div>
-            </div>
-          </div>
-          <div className="dos-box">
-            <div className="box-header dos-header"><span>✓</span> Do's</div>
-            <div style={{ marginBottom: 8 }}>
-              <div className="item-label dos-item-label">Play Your Part in God's Process</div>
-              <div className="item-note">Realize that it might not be your job to walk someone all the way through to salvation. Your assignment may be small — perhaps just one or two conversations or actions.</div>
-            </div>
-            <div style={{ borderTop: "1px solid #A8D5B5", paddingTop: 8 }}>
-              <div className="item-label dos-item-label">Trust God's Timing and Strategy</div>
-              <div className="item-note">Do what you can, then intentionally step back and trust God's unique way and timing for that person's life. Leave the ultimate results to Him.</div>
-            </div>
-          </div>
-        </div>
-
-        {/* One plants, another waters, God makes it grow */}
-        <IllustrationBox src={IMG("image88.png")} alt="One plants, another waters, God makes it grow" height={340} />
-
-        <div className="page-footer-rule" />
-        <div className="page-badge">Page 7</div>
+        <Illus src={IMG("image87.png")} alt="Balancing beam: Isolation — Christ-like Presence — Compromise" h={340} />
+        <PageFooter n={8} />
       </div>
 
-      {/* ─── PAGE 8: CONCLUSION ─── */}
+      {/* ═══ PAGE 9: §4.1 ═══ */}
+      <div className="a4-page">
+        <Band title="Drawing People with God's Love, Not the Fear of Hell" />
+        <Sub title="Being the First Gospel Your Friends See" />
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 }}>
+          <Verse vref="Matthew 5:16">
+            &ldquo;In the same way, let your good deeds shine out for all to see, so that everyone will praise your heavenly Father.&rdquo;
+          </Verse>
+          <Verse vref="John 13:35">
+            &ldquo;Your love for one another will prove to the world that you are my disciples.&rdquo;
+          </Verse>
+        </div>
+        <div className="dos-donts-grid">
+          <DontsBox items={[
+            { t: "Living Hypocritically", n: "Avoid preaching love, kindness, and grace if your everyday life doesn't reflect those values. When your lifestyle contradicts your message, Christianity looks like hypocrisy to outsiders." },
+            { t: "Words Before Witness", n: "Do not rely on vocal preaching before you have established a living testimony. Speaking truth without a matching lifestyle pushes people away." },
+          ]} />
+          <DosBox items={[
+            { t: "Let Your Life Be the First Bible They Read", n: "Before your friends ever open a Bible, they are reading your life. Show them what Christianity looks like through your character, habits, and reactions." },
+            { t: "Let Your Lifestyle Create Holy Envy", n: "Live so that the peace, joy, and love in your life naturally attract others to God. When people genuinely want what you have, your faith explanation becomes far more effective." },
+          ]} />
+        </div>
+        <Illus src={IMG("image78.png")} alt="Posting Faith but ignoring pain vs Sitting in love like Christ did" h={330} />
+        <PageFooter n={9} />
+      </div>
+
+      {/* ═══ PAGE 10: §4.2 ═══ */}
+      <div className="a4-page">
+        <Sub title="Spirit Led, Not Knowledge Driven" />
+        <Verse vref="1 Corinthians 2:1-5">
+          &ldquo;When I first came to you, dear brothers and sisters, I didn&apos;t use lofty words and impressive wisdom to tell you God&apos;s secret plan... Rather than using clever and persuasive speeches, I relied only on the power of the Holy Spirit. I did this so you would not trust in human wisdom but in the power of God.&rdquo;
+        </Verse>
+        <div className="dos-donts-grid">
+          <DontsBox items={[
+            { t: "Relying on Intellectual Arguments", n: "Avoid relying purely on facts, archaeology, or high philosophy to prove God is real. These things appeal to the intellect but rarely change a person's heart or create a longing for Jesus." },
+            { t: "Overcomplicating the Simplicity of the Cross", n: "Relying heavily on clever speeches distracts people with side arguments rather than keeping focus on Jesus." },
+          ]} />
+          <DosBox items={[
+            { t: "Rely on the Holy Spirit", n: "Make the Holy Spirit your primary reliance when sharing the Gospel. He fully knows and can penetrate the deep secrets of the human heart." },
+            { t: "Target the Heart, Not Just the Brain", n: "Trust that the Holy Spirit can stir up a genuine, personal need for Christ in ways human wisdom and clever arguments never could." },
+          ]} />
+        </div>
+        <Illus src={IMG("image86.png")} alt="What I think I need vs What God expects to bring" h={330} />
+        <PageFooter n={10} />
+      </div>
+
+      {/* ═══ PAGE 11: §4.3 ═══ */}
+      <div className="a4-page">
+        <Sub title="Trusting God's Call and His Timing" />
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 }}>
+          <Verse vref="John 6:44">
+            &ldquo;For no one can come to me unless the Father who sent me draws them to me, and at the last day I will raise them up.&rdquo;
+          </Verse>
+          <Verse vref="1 Corinthians 3:6-7">
+            &ldquo;I planted the seed in your hearts, and Apollos watered it, but it was God who made it grow. It&apos;s not important who does the planting or who does the watering. What&apos;s important is that God makes it grow.&rdquo;
+          </Verse>
+        </div>
+        <div className="dos-donts-grid">
+          <DontsBox items={[
+            { t: "Trying to Play the Savior in Your Own Strength", n: "Stop thinking that you can bring someone into salvation through your own strength, knowledge, or effort. Only God can save a person — do not try to take on His role or force a spiritual outcome." },
+            { t: "Overstepping Your Bounds and Pushing People Away", n: "Avoid pushing beyond what God has asked you to do. If you keep forcing the issue out of anxiety, you risk pushing them away from better help later on." },
+          ]} />
+          <DosBox items={[
+            { t: "Play Your Part in God's Process", n: "Realize that it might not be your job to walk someone all the way through to salvation. Your assignment may be small — perhaps just one or two conversations or actions." },
+            { t: "Trust God's Timing and Strategy", n: "Do what you can, then intentionally step back and trust God's unique way and timing for that person's life. Leave the ultimate results to Him." },
+          ]} />
+        </div>
+        <Illus src={IMG("image88.png")} alt="One plants, another waters, God makes it grow" h={330} />
+        <PageFooter n={11} />
+      </div>
+
+      {/* ═══ PAGE 12: CONCLUSION ═══ */}
       <div className="a4-page">
         <div style={{ marginBottom: 20 }}>
           <div className="section-num" style={{ marginBottom: 6 }}>Wrapping Up</div>
-          <div className="section-title" style={{ fontSize: 24 }}>Conclusion</div>
+          <div className="section-title" style={{ fontSize: 26 }}>Conclusion</div>
           <div style={{ width: 48, height: 2, backgroundColor: "#D4622A", marginTop: 8 }} />
         </div>
-
-        <IllustrationBox src={IMG("image90.png")} alt="Good News Good Approach — Listen, Serve, Humble" height={560} />
-
-        <div className="page-footer-rule" />
-        <div className="page-badge">Page 8</div>
+        <Illus src={IMG("image90.png")} alt="Good News Good Approach summary" h={580} />
+        <PageFooter n={12} />
       </div>
 
     </div>

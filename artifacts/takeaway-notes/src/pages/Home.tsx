@@ -78,10 +78,9 @@ export default function Home() {
         </div>
 
         <div className="page-footer-rule" />
-        <div className="page-badge">Page 1</div>
       </div>
 
-      {/* ─── PAGE 2: DISCUSSION + GREAT COMMISSION ─── */}
+      {/* ─── PAGE 1: DISCUSSION + GREAT COMMISSION ─── */}
       <div className="a4-page">
         <div style={{ marginBottom: 20 }}>
           <div className="section-num" style={{ marginBottom: 6 }}>Before We Begin</div>
@@ -148,10 +147,10 @@ export default function Home() {
         </div>
 
         <div className="page-footer-rule" />
-        <div className="page-badge">Page 2</div>
+        <div className="page-badge">Page 1</div>
       </div>
 
-      {/* ─── PAGE 3: SECTION 2.1 ─── */}
+      {/* ─── PAGE 2: SECTION 2.1 ─── */}
       <div className="a4-page">
         <SectionBand title="Win the Friend, Not the Argument" />
         <SubHead title="Don't Fight the Dark, Just Bring the Light" />
@@ -195,13 +194,13 @@ export default function Home() {
         </div>
 
         {/* Bad Approach vs Better Approach — transparent background */}
-        <IllustrationBox src={IMG("image22.png")} alt="Bad Approach vs Better Approach" height={190} />
+        <IllustrationBox src={IMG("image22.png")} alt="Bad Approach vs Better Approach" height={340} />
 
         <div className="page-footer-rule" />
-        <div className="page-badge">Page 3</div>
+        <div className="page-badge">Page 2</div>
       </div>
 
-      {/* ─── PAGE 4: SECTION 2.2 ─── */}
+      {/* ─── PAGE 3: SECTION 2.2 ─── */}
       <div className="a4-page">
         <SubHead title="Listen to Understand, Not to Reply" />
 
@@ -297,10 +296,10 @@ export default function Home() {
         <IllustrationBox src={IMG("image67.png")} alt="Correct words, wrong moment vs Love first, truth later" height={190} />
 
         <div className="page-footer-rule" />
-        <div className="page-badge">Page 4</div>
+        <div className="page-badge">Page 3</div>
       </div>
 
-      {/* ─── PAGE 5: SECTION 3.1 ─── */}
+      {/* ─── PAGE 4: SECTION 3.1 ─── */}
       <div className="a4-page">
         <SectionBand title="Less Judgment, More Approachability" />
         <SubHead title="Battling Spiritual Pride, Showing Empathy" />
@@ -350,13 +349,13 @@ export default function Home() {
         </div>
 
         {/* Pride distances vs Humility brings closer */}
-        <IllustrationBox src={IMG("image85.png")} alt="Pride distances us from others vs Humility brings us closer" height={210} />
+        <IllustrationBox src={IMG("image85.png")} alt="Pride distances us from others vs Humility brings us closer" height={360} />
 
         <div className="page-footer-rule" />
-        <div className="page-badge">Page 5</div>
+        <div className="page-badge">Page 4</div>
       </div>
 
-      {/* ─── PAGE 6: SECTIONS 3.2 + 3.3 ─── */}
+      {/* ─── PAGE 5: SECTIONS 3.2 + 3.3 ─── */}
       <div className="a4-page">
         <SubHead title="High Standards, Low Bridges" />
 
@@ -433,13 +432,13 @@ export default function Home() {
         </div>
 
         {/* Balancing beam: Isolation vs Compromise vs Christ-like Presence */}
-        <IllustrationBox src={IMG("image87.png")} alt="Balancing beam: Isolation — Christ-like Presence — Compromise" height={190} />
+        <IllustrationBox src={IMG("image87.png")} alt="Balancing beam: Isolation — Christ-like Presence — Compromise" height={300} />
 
         <div className="page-footer-rule" />
-        <div className="page-badge">Page 6</div>
+        <div className="page-badge">Page 5</div>
       </div>
 
-      {/* ─── PAGE 7: SECTION 4.1 ─── */}
+      {/* ─── PAGE 6: SECTION 4.1 ─── */}
       <div className="a4-page">
         <SectionBand title="Drawing People with God's Love, Not the Fear of Hell" />
         <SubHead title="Being the First Gospel Your Friends See" />
@@ -481,13 +480,13 @@ export default function Home() {
         </div>
 
         {/* Posting Faith but Ignoring Pain vs Sitting in Love Like Christ Did */}
-        <IllustrationBox src={IMG("image78.png")} alt="Posting Faith but ignoring pain vs Sitting in love like Christ did" height={200} />
+        <IllustrationBox src={IMG("image78.png")} alt="Posting Faith but ignoring pain vs Sitting in love like Christ did" height={340} />
 
         <div className="page-footer-rule" />
-        <div className="page-badge">Page 7</div>
+        <div className="page-badge">Page 6</div>
       </div>
 
-      {/* ─── PAGE 8: SECTION 4.2 + 4.3 ─── */}
+      {/* ─── PAGE 7: SECTION 4.2 + 4.3 ─── */}
       <div className="a4-page">
         <SubHead title="Spirit Led, Not Knowledge Driven" />
 
@@ -564,27 +563,24 @@ export default function Home() {
         </div>
 
         {/* One plants, another waters, God makes it grow */}
-        <IllustrationBox src={IMG("image88.png")} alt="One plants, another waters, God makes it grow" height={200} />
+        <IllustrationBox src={IMG("image88.png")} alt="One plants, another waters, God makes it grow" height={340} />
+
+        <div className="page-footer-rule" />
+        <div className="page-badge">Page 7</div>
+      </div>
+
+      {/* ─── PAGE 8: CONCLUSION ─── */}
+      <div className="a4-page">
+        <div style={{ marginBottom: 20 }}>
+          <div className="section-num" style={{ marginBottom: 6 }}>Wrapping Up</div>
+          <div className="section-title" style={{ fontSize: 24 }}>Conclusion</div>
+          <div style={{ width: 48, height: 2, backgroundColor: "#D4622A", marginTop: 8 }} />
+        </div>
+
+        <IllustrationBox src={IMG("image90.png")} alt="Good News Good Approach — Listen, Serve, Humble" height={560} />
 
         <div className="page-footer-rule" />
         <div className="page-badge">Page 8</div>
-      </div>
-
-      {/* ─── PAGE 9: CONCLUSION — IMAGE ONLY ─── */}
-      <div className="a4-page" style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", minHeight: 1123 }}>
-        <div style={{ position: "absolute", top: 28, left: 40, width: 56, height: 56, borderTop: "3px solid #C89B3C", borderLeft: "3px solid #C89B3C", borderRadius: "2px 0 0 0" }} />
-        <div style={{ position: "absolute", top: 28, right: 40, width: 56, height: 56, borderTop: "3px solid #C89B3C", borderRight: "3px solid #C89B3C", borderRadius: "0 2px 0 0" }} />
-        <div style={{ position: "absolute", bottom: 40, left: 40, width: 56, height: 56, borderBottom: "3px solid #C89B3C", borderLeft: "3px solid #C89B3C", borderRadius: "0 0 0 2px" }} />
-        <div style={{ position: "absolute", bottom: 40, right: 40, width: 56, height: 56, borderBottom: "3px solid #C89B3C", borderRight: "3px solid #C89B3C", borderRadius: "0 0 2px 0" }} />
-
-        <img
-          src={IMG("image90.png")}
-          alt="Good News Good Approach — Listen, Serve, Humble"
-          style={{ width: "88%", objectFit: "contain", display: "block" }}
-        />
-
-        <div className="page-footer-rule" />
-        <div className="page-badge">Page 9</div>
       </div>
 
     </div>

@@ -1,17 +1,13 @@
 const IMG = (name: string) => `${import.meta.env.BASE_URL}images/${name}`;
 
-const IllustrationBox = ({ src, alt, height = 160 }: { src: string; alt: string; height?: number }) => (
+const IllustrationBox = ({ src, alt, height = 180 }: { src: string; alt: string; height?: number }) => (
   <div style={{
     width: "100%",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    margin: "10px 0",
-    borderRadius: 8,
-    overflow: "hidden",
-    backgroundColor: "#1C1008",
-    minHeight: height,
-    padding: "0 4px",
+    margin: "12px 0",
+    padding: 0,
   }}>
     <img
       src={src}
@@ -26,85 +22,59 @@ const IllustrationBox = ({ src, alt, height = 160 }: { src: string; alt: string;
   </div>
 );
 
+const SectionBand = ({ title }: { title: string }) => (
+  <div className="section-band">
+    <div className="section-band-title" style={{ fontSize: 17 }}>{title}</div>
+  </div>
+);
+
+const SubHead = ({ title }: { title: string }) => (
+  <div style={{ margin: "6px 0 4px 0" }}>
+    <div className="subsection-title">{title}</div>
+  </div>
+);
+
 export default function Home() {
   return (
     <div className="document-bg">
 
-      {/* ─── PAGE 1: TITLE ─── */}
-      <div className="a4-page">
-        <div style={{ position: "absolute", top: 28, left: 40, width: 48, height: 48, borderTop: "3px solid #C89B3C", borderLeft: "3px solid #C89B3C", borderRadius: "2px 0 0 0" }} />
-        <div style={{ position: "absolute", bottom: 40, right: 40, width: 48, height: 48, borderBottom: "3px solid #C89B3C", borderRight: "3px solid #C89B3C", borderRadius: "0 0 2px 0" }} />
+      {/* ─── PAGE 1: TITLE ONLY ─── */}
+      <div className="a4-page" style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", minHeight: 1123, textAlign: "center" }}>
+        {/* Decorative corner accents */}
+        <div style={{ position: "absolute", top: 28, left: 40, width: 56, height: 56, borderTop: "3px solid #C89B3C", borderLeft: "3px solid #C89B3C", borderRadius: "2px 0 0 0" }} />
+        <div style={{ position: "absolute", top: 28, right: 40, width: 56, height: 56, borderTop: "3px solid #C89B3C", borderRight: "3px solid #C89B3C", borderRadius: "0 2px 0 0" }} />
+        <div style={{ position: "absolute", bottom: 40, left: 40, width: 56, height: 56, borderBottom: "3px solid #C89B3C", borderLeft: "3px solid #C89B3C", borderRadius: "0 0 0 2px" }} />
+        <div style={{ position: "absolute", bottom: 40, right: 40, width: 56, height: 56, borderBottom: "3px solid #C89B3C", borderRight: "3px solid #C89B3C", borderRadius: "0 0 2px 0" }} />
 
-        <div style={{ marginBottom: 24, marginTop: 16 }}>
-          <div className="section-num" style={{ marginBottom: 8 }}>Youth Group · Takeaway Notes</div>
-          <div style={{ width: 48, height: 2, backgroundColor: "#D4622A" }} />
+        {/* Hero illustration */}
+        <div style={{ width: "80%", marginBottom: 36 }}>
+          <img
+            src={IMG("image35.png")}
+            alt="Should I bring up Jesus — awkward group scene"
+            style={{ width: "100%", objectFit: "contain", display: "block" }}
+          />
         </div>
 
-        {/* Two-column: title left, image right */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, alignItems: "center", marginBottom: 20 }}>
-          <div>
-            <div className="display-title" style={{ marginBottom: 12 }}>Good News,</div>
-            <div className="display-title" style={{ color: "#D4622A", marginBottom: 16 }}>Bad Approach.</div>
-            <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 17, fontStyle: "italic", color: "#5C3A1E", lineHeight: 1.4 }}>
-              The Do's, Don'ts, and Awkward Moments
-            </div>
-          </div>
-          <div style={{
-            backgroundColor: "#1C1008",
-            borderRadius: 10,
-            overflow: "hidden",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            minHeight: 220,
-          }}>
-            <img src={IMG("image35.png")} alt="Should I bring up Jesus — awkward group scene" style={{ width: "100%", objectFit: "contain", display: "block" }} />
-          </div>
+        {/* Title */}
+        <div style={{ marginBottom: 10 }}>
+          <div className="display-title" style={{ fontSize: 52, textAlign: "center" }}>Good News,</div>
+          <div className="display-title" style={{ fontSize: 52, color: "#D4622A", textAlign: "center" }}>Bad Approach.</div>
         </div>
 
-        <div style={{ width: "100%", height: 1, background: "linear-gradient(90deg, #C89B3C, transparent)", margin: "20px 0" }} />
-
-        <div style={{ padding: "16px 20px", background: "#F3E8C8", borderRadius: 8, border: "1px solid #C89B3C20", marginBottom: 24 }}>
-          <div className="verse-ref" style={{ marginBottom: 8 }}>Colossians 4:5-6</div>
-          <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, fontStyle: "italic", lineHeight: 1.75, color: "#2C1A0F" }}>
-            "Live wisely among those who are not believers, and make the most of every opportunity. Let your conversation be gracious and attractive so that you will have the right answer for everyone."
-          </div>
+        {/* Subtitle */}
+        <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, fontStyle: "italic", color: "#5C3A1E", lineHeight: 1.5, marginBottom: 36 }}>
+          The Do's, Don'ts, and Awkward Moments
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 28 }}>
-          <div style={{ background: "#FAF0D8", border: "1px solid #E8C87A", borderRadius: 6, padding: "10px 14px", display: "flex", alignItems: "flex-start", gap: 10 }}>
-            <div style={{ fontFamily: "Inter, sans-serif", fontSize: 18, fontWeight: 800, color: "#D4622A", lineHeight: 1, minWidth: 24 }}>1</div>
-            <div>
-              <div style={{ fontFamily: "Inter, sans-serif", fontSize: 11, fontWeight: 700, color: "#2C1A0F", lineHeight: 1.3 }}>The Great Commission</div>
-              <div style={{ fontFamily: "Inter, sans-serif", fontSize: 10, color: "#8B6340", marginTop: 2 }}>Why we share the Gospel</div>
-            </div>
-          </div>
-          <div style={{ background: "#FAF0D8", border: "1px solid #E8C87A", borderRadius: 6, padding: "10px 14px", display: "flex", alignItems: "flex-start", gap: 10 }}>
-            <div style={{ fontFamily: "Inter, sans-serif", fontSize: 18, fontWeight: 800, color: "#D4622A", lineHeight: 1, minWidth: 24 }}>2</div>
-            <div>
-              <div style={{ fontFamily: "Inter, sans-serif", fontSize: 11, fontWeight: 700, color: "#2C1A0F", lineHeight: 1.3 }}>Win the Friend, Not the Argument</div>
-              <div style={{ fontFamily: "Inter, sans-serif", fontSize: 10, color: "#8B6340", marginTop: 2 }}>Listen, love, and build bridges</div>
-            </div>
-          </div>
-          <div style={{ background: "#FAF0D8", border: "1px solid #E8C87A", borderRadius: 6, padding: "10px 14px", display: "flex", alignItems: "flex-start", gap: 10 }}>
-            <div style={{ fontFamily: "Inter, sans-serif", fontSize: 18, fontWeight: 800, color: "#D4622A", lineHeight: 1, minWidth: 24 }}>3</div>
-            <div>
-              <div style={{ fontFamily: "Inter, sans-serif", fontSize: 11, fontWeight: 700, color: "#2C1A0F", lineHeight: 1.3 }}>Less Judgment, More Approachability</div>
-              <div style={{ fontFamily: "Inter, sans-serif", fontSize: 10, color: "#8B6340", marginTop: 2 }}>Humility, empathy, and belonging</div>
-            </div>
-          </div>
-          <div style={{ background: "#FAF0D8", border: "1px solid #E8C87A", borderRadius: 6, padding: "10px 14px", display: "flex", alignItems: "flex-start", gap: 10 }}>
-            <div style={{ fontFamily: "Inter, sans-serif", fontSize: 18, fontWeight: 800, color: "#D4622A", lineHeight: 1, minWidth: 24 }}>4</div>
-            <div>
-              <div style={{ fontFamily: "Inter, sans-serif", fontSize: 11, fontWeight: 700, color: "#2C1A0F", lineHeight: 1.3 }}>Drawing People with God's Love</div>
-              <div style={{ fontFamily: "Inter, sans-serif", fontSize: 10, color: "#8B6340", marginTop: 2 }}>Live it, trust the Spirit, trust His timing</div>
-            </div>
-          </div>
-        </div>
+        {/* Decorative rule */}
+        <div style={{ width: 120, height: 1, background: "linear-gradient(90deg, transparent, #C89B3C, transparent)", marginBottom: 24 }} />
 
-        <div style={{ width: "100%", height: 1, background: "linear-gradient(90deg, transparent, #C89B3C, transparent)", marginBottom: 14 }} />
-        <div style={{ textAlign: "center", fontFamily: "Inter, sans-serif", fontSize: 11, color: "#8B6340", letterSpacing: "0.1em", textTransform: "uppercase" }}>
-          The Right Answer · The Right Tone
+        {/* Org + date */}
+        <div style={{ fontFamily: "Inter, sans-serif", fontSize: 13, fontWeight: 600, color: "#8B6340", letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 6 }}>
+          Freedom Yuva
+        </div>
+        <div style={{ fontFamily: "Inter, sans-serif", fontSize: 12, color: "#8B6340", letterSpacing: "0.06em" }}>
+          14 June 2026
         </div>
 
         <div className="page-footer-rule" />
@@ -133,7 +103,7 @@ export default function Home() {
           <div className="reflection-line" />
           <div className="reflection-line" />
         </div>
-        <div style={{ marginBottom: 16 }}>
+        <div style={{ marginBottom: 20 }}>
           <div style={{ fontFamily: "Inter, sans-serif", fontSize: 11.5, fontWeight: 700, color: "#D4622A", letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 6 }}>
             Q3 — If someone has ever tried sharing the Gospel with you, what did you like about it, and what totally annoyed or frustrated you?
           </div>
@@ -143,22 +113,15 @@ export default function Home() {
 
         <div className="ornament">— ✦ —</div>
 
-        <div className="section-band">
-          <div className="section-band-num">1</div>
-          <div className="section-band-title">The Great Commission: Why We Need to Share the Gospel</div>
-        </div>
+        <SectionBand title="The Great Commission: Why We Need to Share the Gospel" />
 
         <div className="verse-box" style={{ marginBottom: 10 }}>
           <div className="verse-ref">Mark 16:15</div>
           <div className="verse-text">"And then he told them, "Go into all the world and preach the Good News to everyone.""</div>
         </div>
 
-        {/* Crossroads — half-page image */}
-        <IllustrationBox
-          src={IMG("image55.png")}
-          alt="The crossroads: Stay Silent or Step Forward"
-          height={190}
-        />
+        {/* Crossroads — half-page image, no background */}
+        <IllustrationBox src={IMG("image55.png")} alt="The crossroads: Stay Silent or Step Forward" height={210} />
 
         <div style={{ marginTop: 10 }}>
           <div style={{ fontFamily: "Inter, sans-serif", fontSize: 11, fontWeight: 700, color: "#5C3A1E", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }}>Common Challenges &amp; Fears</div>
@@ -188,17 +151,10 @@ export default function Home() {
         <div className="page-badge">Page 2</div>
       </div>
 
-      {/* ─── PAGE 3: SECTION 2.1 + 2.2 ─── */}
+      {/* ─── PAGE 3: SECTION 2.1 ─── */}
       <div className="a4-page">
-        <div className="section-band">
-          <div className="section-band-num">2</div>
-          <div className="section-band-title">Win the Friend, Not the Argument</div>
-        </div>
-
-        <div style={{ marginBottom: 6 }}>
-          <div className="section-num" style={{ marginBottom: 4 }}>2.1</div>
-          <div className="subsection-title">Don't Fight the Dark, Just Bring the Light</div>
-        </div>
+        <SectionBand title="Win the Friend, Not the Argument" />
+        <SubHead title="Don't Fight the Dark, Just Bring the Light" />
 
         <div className="verse-box" style={{ marginBottom: 10 }}>
           <div className="verse-ref">Acts 17:22-23</div>
@@ -238,17 +194,18 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Bad Approach vs Better Approach illustration */}
-        <IllustrationBox src={IMG("image22.png")} alt="Bad Approach vs Better Approach in conversation" height={148} />
+        {/* Bad Approach vs Better Approach — transparent background */}
+        <IllustrationBox src={IMG("image22.png")} alt="Bad Approach vs Better Approach" height={190} />
 
-        <hr className="sub-divider" />
+        <div className="page-footer-rule" />
+        <div className="page-badge">Page 3</div>
+      </div>
 
-        <div style={{ marginBottom: 6 }}>
-          <div className="section-num" style={{ marginBottom: 4 }}>2.2</div>
-          <div className="subsection-title">Listen to Understand, Not to Reply</div>
-        </div>
+      {/* ─── PAGE 4: SECTION 2.2 ─── */}
+      <div className="a4-page">
+        <SubHead title="Listen to Understand, Not to Reply" />
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 10 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 }}>
           <div className="verse-box" style={{ margin: 0 }}>
             <div className="verse-ref">2 Timothy 2:23-24</div>
             <div className="verse-text">"Again I say, don't get involved in foolish, ignorant arguments that only start fights. A servant of the Lord must not quarrel but must be kind to everyone, be able to teach, and be patient with difficult people."</div>
@@ -292,19 +249,11 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Brain vs Heart listening illustration */}
-        <IllustrationBox src={IMG("image72.png")} alt="Brain trying to dismantle vs Heart trying to understand" height={140} />
+        {/* Brain vs Heart */}
+        <IllustrationBox src={IMG("image72.png")} alt="Brain trying to dismantle vs Heart trying to understand" height={210} />
 
-        <div className="page-footer-rule" />
-        <div className="page-badge">Page 3</div>
-      </div>
-
-      {/* ─── PAGE 4: SECTION 2.3 + 3.1 ─── */}
-      <div className="a4-page">
-        <div style={{ marginBottom: 6 }}>
-          <div className="section-num" style={{ marginBottom: 4 }}>2.3</div>
-          <div className="subsection-title">Love Your Friends, Lose the Lecture</div>
-        </div>
+        <hr className="sub-divider" />
+        <SubHead title="Love Your Friends, Lose the Lecture" />
 
         <div className="verse-box" style={{ marginBottom: 10 }}>
           <div className="verse-ref">1 John 3:16-18</div>
@@ -331,7 +280,7 @@ export default function Home() {
             <div className="box-header dos-header"><span>✓</span> Do's</div>
             <div style={{ marginBottom: 8 }}>
               <div className="item-label dos-item-label">Demonstrate Love Through Action First</div>
-              <div className="item-note">Before speaking about God's love, demonstrate it. Meeting physical, emotional, or financial needs is the most tangible way to show you care.</div>
+              <div className="item-note">Before speaking about God's love, demonstrate it by meeting physical, emotional, or financial needs.</div>
             </div>
             <div style={{ borderTop: "1px solid #A8D5B5", paddingTop: 8, marginBottom: 8 }}>
               <div className="item-label dos-item-label">Provide the Support They Actually Need</div>
@@ -345,21 +294,18 @@ export default function Home() {
         </div>
 
         {/* Correct words wrong moment vs Love first truth later */}
-        <IllustrationBox src={IMG("image67.png")} alt="Correct words, wrong moment vs Love first, truth later" height={148} />
+        <IllustrationBox src={IMG("image67.png")} alt="Correct words, wrong moment vs Love first, truth later" height={190} />
 
-        <div className="ornament">— ✦ —</div>
+        <div className="page-footer-rule" />
+        <div className="page-badge">Page 4</div>
+      </div>
 
-        <div className="section-band">
-          <div className="section-band-num">3</div>
-          <div className="section-band-title">Less Judgment, More Approachability</div>
-        </div>
+      {/* ─── PAGE 5: SECTION 3.1 ─── */}
+      <div className="a4-page">
+        <SectionBand title="Less Judgment, More Approachability" />
+        <SubHead title="Battling Spiritual Pride, Showing Empathy" />
 
-        <div style={{ marginBottom: 6 }}>
-          <div className="section-num" style={{ marginBottom: 4 }}>3.1</div>
-          <div className="subsection-title">Battling Spiritual Pride, Showing Empathy</div>
-        </div>
-
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 10 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 }}>
           <div className="verse-box" style={{ margin: 0 }}>
             <div className="verse-ref">Luke 18:10-14</div>
             <div className="verse-text">"...The Pharisee stood by himself and prayed: 'I thank you, God, that I am not like other people...' But the tax collector stood at a distance... saying, 'O God, be merciful to me, for I am a sinner.' I tell you, this sinner, not the Pharisee, returned home justified before God."</div>
@@ -404,18 +350,15 @@ export default function Home() {
         </div>
 
         {/* Pride distances vs Humility brings closer */}
-        <IllustrationBox src={IMG("image85.png")} alt="Pride distances us from others vs Humility brings us closer" height={148} />
+        <IllustrationBox src={IMG("image85.png")} alt="Pride distances us from others vs Humility brings us closer" height={210} />
 
         <div className="page-footer-rule" />
-        <div className="page-badge">Page 4</div>
+        <div className="page-badge">Page 5</div>
       </div>
 
-      {/* ─── PAGE 5: SECTIONS 3.2 + 3.3 ─── */}
+      {/* ─── PAGE 6: SECTIONS 3.2 + 3.3 ─── */}
       <div className="a4-page">
-        <div style={{ marginBottom: 6 }}>
-          <div className="section-num" style={{ marginBottom: 4 }}>3.2</div>
-          <div className="subsection-title">High Standards, Low Bridges</div>
-        </div>
+        <SubHead title="High Standards, Low Bridges" />
 
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 10 }}>
           <div className="verse-box" style={{ margin: 0 }}>
@@ -433,11 +376,11 @@ export default function Home() {
             <div className="box-header donts-header"><span>✗</span> Don'ts</div>
             <div style={{ marginBottom: 8 }}>
               <div className="item-label donts-item-label">Gatekeeping with High Standards</div>
-              <div className="item-note">Forcing your personal, high standards onto outsiders or new believers — when you expect people to completely change before they can relate to you, you build an inaccessible wall.</div>
+              <div className="item-note">Forcing your personal, high standards onto outsiders or new believers builds an inaccessible wall.</div>
             </div>
             <div style={{ borderTop: "1px solid #E8A898", paddingTop: 8 }}>
               <div className="item-label donts-item-label">Conditional Mingling</div>
-              <div className="item-note">Only hanging out with, helping, or welcoming people if they already measure up to a certain spiritual or moral level — setting a "qualification bar" for your friendship.</div>
+              <div className="item-note">Only hanging out with, helping, or welcoming people if they already measure up to a certain spiritual or moral level.</div>
             </div>
           </div>
           <div className="dos-box">
@@ -453,15 +396,11 @@ export default function Home() {
           </div>
         </div>
 
-        {/* High Standards High Barriers vs High Standards Low Bridges */}
-        <IllustrationBox src={IMG("image83.png")} alt="High Standards High Barriers vs High Standards Low Bridges" height={160} />
+        {/* High Standards High Barriers vs Low Bridges */}
+        <IllustrationBox src={IMG("image83.png")} alt="High Standards High Barriers vs High Standards Low Bridges" height={200} />
 
         <hr className="sub-divider" />
-
-        <div style={{ marginBottom: 6 }}>
-          <div className="section-num" style={{ marginBottom: 4 }}>3.3</div>
-          <div className="subsection-title">Set Apart, Not Pulled Apart</div>
-        </div>
+        <SubHead title="Set Apart, Not Pulled Apart" />
 
         <div className="verse-box" style={{ marginBottom: 10 }}>
           <div className="verse-ref">1 Corinthians 9:20-23</div>
@@ -493,26 +432,19 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Isolation vs Christ-like Presence vs Compromise balancing beam */}
-        <IllustrationBox src={IMG("image87.png")} alt="Balancing beam: Isolation — Christ-like Presence — Compromise" height={152} />
+        {/* Balancing beam: Isolation vs Compromise vs Christ-like Presence */}
+        <IllustrationBox src={IMG("image87.png")} alt="Balancing beam: Isolation — Christ-like Presence — Compromise" height={190} />
 
         <div className="page-footer-rule" />
-        <div className="page-badge">Page 5</div>
+        <div className="page-badge">Page 6</div>
       </div>
 
-      {/* ─── PAGE 6: SECTION 4.1 + 4.2 ─── */}
+      {/* ─── PAGE 7: SECTION 4.1 ─── */}
       <div className="a4-page">
-        <div className="section-band">
-          <div className="section-band-num">4</div>
-          <div className="section-band-title">Drawing People with God's Love, Not the Fear of Hell</div>
-        </div>
+        <SectionBand title="Drawing People with God's Love, Not the Fear of Hell" />
+        <SubHead title="Being the First Gospel Your Friends See" />
 
-        <div style={{ marginBottom: 6 }}>
-          <div className="section-num" style={{ marginBottom: 4 }}>4.1</div>
-          <div className="subsection-title">Being the First Gospel Your Friends See</div>
-        </div>
-
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 10 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 }}>
           <div className="verse-box" style={{ margin: 0 }}>
             <div className="verse-ref">Matthew 5:16</div>
             <div className="verse-text">"In the same way, let your good deeds shine out for all to see, so that everyone will praise your heavenly Father."</div>
@@ -549,14 +481,15 @@ export default function Home() {
         </div>
 
         {/* Posting Faith but Ignoring Pain vs Sitting in Love Like Christ Did */}
-        <IllustrationBox src={IMG("image78.png")} alt="Posting Faith but ignoring pain vs Sitting in love like Christ did" height={152} />
+        <IllustrationBox src={IMG("image78.png")} alt="Posting Faith but ignoring pain vs Sitting in love like Christ did" height={200} />
 
-        <hr className="sub-divider" />
+        <div className="page-footer-rule" />
+        <div className="page-badge">Page 7</div>
+      </div>
 
-        <div style={{ marginBottom: 6 }}>
-          <div className="section-num" style={{ marginBottom: 4 }}>4.2</div>
-          <div className="subsection-title">Spirit Led, Not Knowledge Driven</div>
-        </div>
+      {/* ─── PAGE 8: SECTION 4.2 + 4.3 ─── */}
+      <div className="a4-page">
+        <SubHead title="Spirit Led, Not Knowledge Driven" />
 
         <div className="verse-box" style={{ marginBottom: 10 }}>
           <div className="verse-ref">1 Corinthians 2:1-5</div>
@@ -588,19 +521,11 @@ export default function Home() {
           </div>
         </div>
 
-        {/* What I think I need (heavy backpack) vs What God expects to bring */}
-        <IllustrationBox src={IMG("image86.png")} alt="What I think I need vs What God expects to bring" height={148} />
+        {/* What I think I need vs What God expects to bring */}
+        <IllustrationBox src={IMG("image86.png")} alt="What I think I need vs What God expects to bring" height={190} />
 
-        <div className="page-footer-rule" />
-        <div className="page-badge">Page 6</div>
-      </div>
-
-      {/* ─── PAGE 7: SECTION 4.3 + RECAP ─── */}
-      <div className="a4-page">
-        <div style={{ marginBottom: 6 }}>
-          <div className="section-num" style={{ marginBottom: 4 }}>4.3</div>
-          <div className="subsection-title">Trusting God's Call and His Timing</div>
-        </div>
+        <hr className="sub-divider" />
+        <SubHead title="Trusting God's Call and His Timing" />
 
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 10 }}>
           <div className="verse-box" style={{ margin: 0 }}>
@@ -639,121 +564,27 @@ export default function Home() {
         </div>
 
         {/* One plants, another waters, God makes it grow */}
-        <IllustrationBox src={IMG("image88.png")} alt="One plants, another waters, God makes it grow" height={168} />
-
-        <div style={{ marginTop: 14, marginBottom: 14 }}>
-          <div style={{ fontFamily: "Inter, sans-serif", fontSize: 11, fontWeight: 700, color: "#5C3A1E", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>Quick Recap — The Four Big Ideas</div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-            <div style={{ background: "#FAF0D8", border: "1px solid #E8C87A", borderRadius: 6, padding: "10px 14px" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
-                <div style={{ width: 22, height: 22, background: "#D4622A", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                  <span style={{ fontFamily: "Inter, sans-serif", fontSize: 11, fontWeight: 800, color: "white" }}>1</span>
-                </div>
-                <div style={{ fontFamily: "Inter, sans-serif", fontSize: 11, fontWeight: 700, color: "#2C1A0F" }}>Share, Don't Debate</div>
-              </div>
-              <div style={{ fontFamily: "Inter, sans-serif", fontSize: 10.5, color: "#5C3A1E", lineHeight: 1.5 }}>Lead with common ground. Your goal is to plant a seed, not win an argument.</div>
-            </div>
-            <div style={{ background: "#FAF0D8", border: "1px solid #E8C87A", borderRadius: 6, padding: "10px 14px" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
-                <div style={{ width: 22, height: 22, background: "#D4622A", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                  <span style={{ fontFamily: "Inter, sans-serif", fontSize: 11, fontWeight: 800, color: "white" }}>2</span>
-                </div>
-                <div style={{ fontFamily: "Inter, sans-serif", fontSize: 11, fontWeight: 700, color: "#2C1A0F" }}>Love in Action</div>
-              </div>
-              <div style={{ fontFamily: "Inter, sans-serif", fontSize: 10.5, color: "#5C3A1E", lineHeight: 1.5 }}>Meet people where they are — physically, emotionally, and relationally — before you speak.</div>
-            </div>
-            <div style={{ background: "#FAF0D8", border: "1px solid #E8C87A", borderRadius: 6, padding: "10px 14px" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
-                <div style={{ width: 22, height: 22, background: "#D4622A", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                  <span style={{ fontFamily: "Inter, sans-serif", fontSize: 11, fontWeight: 800, color: "white" }}>3</span>
-                </div>
-                <div style={{ fontFamily: "Inter, sans-serif", fontSize: 11, fontWeight: 700, color: "#2C1A0F" }}>Stay Humble, Stay Open</div>
-              </div>
-              <div style={{ fontFamily: "Inter, sans-serif", fontSize: 10.5, color: "#5C3A1E", lineHeight: 1.5 }}>Keep the bridge low and the standards high. Empathy and approachability open more doors than judgment.</div>
-            </div>
-            <div style={{ background: "#FAF0D8", border: "1px solid #E8C87A", borderRadius: 6, padding: "10px 14px" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
-                <div style={{ width: 22, height: 22, background: "#D4622A", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                  <span style={{ fontFamily: "Inter, sans-serif", fontSize: 11, fontWeight: 800, color: "white" }}>4</span>
-                </div>
-                <div style={{ fontFamily: "Inter, sans-serif", fontSize: 11, fontWeight: 700, color: "#2C1A0F" }}>Trust the Spirit, Not Your Strength</div>
-              </div>
-              <div style={{ fontFamily: "Inter, sans-serif", fontSize: 10.5, color: "#5C3A1E", lineHeight: 1.5 }}>You plant and water. God makes it grow. Do your part faithfully, then release the results to Him.</div>
-            </div>
-          </div>
-        </div>
-
-        <div className="page-footer-rule" />
-        <div className="page-badge">Page 7</div>
-      </div>
-
-      {/* ─── PAGE 8: CONCLUSION ─── */}
-      <div className="a4-page">
-        <div style={{ position: "absolute", top: 28, left: 40, width: 48, height: 48, borderTop: "3px solid #C89B3C", borderLeft: "3px solid #C89B3C", borderRadius: "2px 0 0 0" }} />
-        <div style={{ position: "absolute", bottom: 40, right: 40, width: 48, height: 48, borderBottom: "3px solid #C89B3C", borderRight: "3px solid #C89B3C", borderRadius: "0 0 2px 0" }} />
-
-        <div style={{ marginBottom: 16 }}>
-          <div className="section-num" style={{ marginBottom: 6 }}>Conclusion</div>
-          <div className="section-title" style={{ fontSize: 28 }}>The Right Answer,</div>
-          <div className="section-title" style={{ fontSize: 28, color: "#D4622A" }}>The Right Tone.</div>
-          <div style={{ width: 48, height: 2, backgroundColor: "#C89B3C", marginTop: 10 }} />
-        </div>
-
-        <div className="conclusion-box">
-          <div style={{ fontFamily: "Inter, sans-serif", fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#E8C87A", marginBottom: 10 }}>Colossians 4:5-6</div>
-          <div className="conclusion-verse-text">
-            "Live wisely among those who are not believers, and make the most of every opportunity. Let your conversation be gracious and attractive so that you will have the right answer for everyone."
-          </div>
-          <div className="conclusion-point">
-            <div className="conclusion-point-title">Making the Most of Every Opportunity</div>
-            <div className="conclusion-point-text">We are called to live wisely among those who do not believe, recognizing that every interaction is a unique open door. We must be intentional and ready to step into all the appropriate opportunities God provides to share the Gospel.</div>
-          </div>
-          <div className="conclusion-point">
-            <div className="conclusion-point-title">Gently, Graciously, and Truthfully</div>
-            <div className="conclusion-point-text">Having the right biblical answers is only half the battle — how we deliver them matters just as much. Our conversations must be genuinely gracious and attractive. By pairing sound truth with a gentle spirit, we remove friction and ensure our witness reflects both the truth and love of Christ.</div>
-          </div>
-        </div>
-
-        {/* "Good news, Good Approach" summary infographic */}
-        <div style={{
-          borderRadius: 8,
-          overflow: "hidden",
-          margin: "14px 0",
-          border: "1px solid #C89B3C40",
-        }}>
-          <img
-            src={IMG("image90.png")}
-            alt="Good News Good Approach — Listen, Serve, Humble summary"
-            style={{ width: "100%", display: "block", objectFit: "contain" }}
-          />
-        </div>
-
-        <div style={{ marginTop: 14 }}>
-          <div style={{ fontFamily: "Inter, sans-serif", fontSize: 11, fontWeight: 700, color: "#D4622A", letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 8 }}>
-            My Personal Commitment — One Thing I'll Do Differently:
-          </div>
-          <div className="reflection-line" />
-          <div className="reflection-line" />
-        </div>
-
-        <div style={{ textAlign: "center", marginTop: 20, marginBottom: 10 }}>
-          <div style={{ width: 40, height: 40, background: "linear-gradient(135deg, #D4622A, #C89B3C)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 10px auto" }}>
-            <span style={{ color: "white", fontSize: 18 }}>✦</span>
-          </div>
-          <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 13, fontStyle: "italic", color: "#5C3A1E", lineHeight: 1.6 }}>
-            "The message hasn't changed.<br />
-            But the <em>approach</em> — that's on us."
-          </div>
-        </div>
-
-        <div style={{ textAlign: "center", marginTop: 12 }}>
-          <div style={{ fontFamily: "Inter, sans-serif", fontSize: 10, color: "#8B6340", letterSpacing: "0.12em", textTransform: "uppercase" }}>
-            Good News, Bad Approach · Youth Group Series
-          </div>
-        </div>
+        <IllustrationBox src={IMG("image88.png")} alt="One plants, another waters, God makes it grow" height={200} />
 
         <div className="page-footer-rule" />
         <div className="page-badge">Page 8</div>
+      </div>
+
+      {/* ─── PAGE 9: CONCLUSION — IMAGE ONLY ─── */}
+      <div className="a4-page" style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", minHeight: 1123 }}>
+        <div style={{ position: "absolute", top: 28, left: 40, width: 56, height: 56, borderTop: "3px solid #C89B3C", borderLeft: "3px solid #C89B3C", borderRadius: "2px 0 0 0" }} />
+        <div style={{ position: "absolute", top: 28, right: 40, width: 56, height: 56, borderTop: "3px solid #C89B3C", borderRight: "3px solid #C89B3C", borderRadius: "0 2px 0 0" }} />
+        <div style={{ position: "absolute", bottom: 40, left: 40, width: 56, height: 56, borderBottom: "3px solid #C89B3C", borderLeft: "3px solid #C89B3C", borderRadius: "0 0 0 2px" }} />
+        <div style={{ position: "absolute", bottom: 40, right: 40, width: 56, height: 56, borderBottom: "3px solid #C89B3C", borderRight: "3px solid #C89B3C", borderRadius: "0 0 2px 0" }} />
+
+        <img
+          src={IMG("image90.png")}
+          alt="Good News Good Approach — Listen, Serve, Humble"
+          style={{ width: "88%", objectFit: "contain", display: "block" }}
+        />
+
+        <div className="page-footer-rule" />
+        <div className="page-badge">Page 9</div>
       </div>
 
     </div>

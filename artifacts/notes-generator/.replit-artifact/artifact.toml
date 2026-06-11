@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/generator/"
+title = "Takeaway Notes Generator"
+version = "1.0.0"
+id = "artifacts/notes-generator"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/generator/" ]
+localPort = 22125
+
+[services.development]
+run = "pnpm --filter @workspace/notes-generator run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/notes-generator", "run", "build" ]
+publicDir = "artifacts/notes-generator/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "22125"
+BASE_PATH = "/generator/"

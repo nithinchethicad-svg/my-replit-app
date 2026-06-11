@@ -10,13 +10,14 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: generator
+    description: Takeaway notes generator operations
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,13 +25,315 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /generator/sessions/{sessionId}:
+    get:
+      operationId: getSession
+      tags: [generator]
+      summary: Get session details
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Session found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Session"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /generator/sessions/{sessionId}/questionnaire:
+    post:
+      operationId: submitQuestionnaire
+      tags: [generator]
+      summary: Submit questionnaire answers
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QuestionnaireInput"
+      responses:
+        "200":
+          description: Questionnaire processed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuestionnaireResult"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /generator/sessions/{sessionId}/generate:
+    post:
+      operationId: generateNotes
+      tags: [generator]
+      summary: Generate takeaway notes from session
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Notes generated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneratedNotes"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /generator/sessions/{sessionId}/edit:
+    post:
+      operationId: editNotes
+      tags: [generator]
+      summary: Apply edit instructions to update the notes
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EditInput"
+      responses:
+        "200":
+          description: Notes updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneratedNotes"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
 components:
   schemas:
     HealthStatus:
       type: object
+      required: [status]
       properties:
         status:
           type: string
-      required:
-        - status
 
+    UploadResult:
+      type: object
+      required: [sessionId, extractedContent, questions]
+      properties:
+        sessionId:
+          type: string
+        extractedContent:
+          type: string
+        questions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Question"
+
+    Session:
+      type: object
+      required: [sessionId, status, questions]
+      properties:
+        sessionId:
+          type: string
+        status:
+          type: string
+          enum: [uploading, questionnaire, generating, complete]
+        extractedContent:
+          type: ["string", "null"]
+        questions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Question"
+        answers:
+          type: ["object", "null"]
+          additionalProperties: true
+        notes:
+          type: ["object", "null"]
+          additionalProperties: true
+        uploadedImageUrls:
+          type: array
+          items:
+            type: string
+
+    Question:
+      type: object
+      required: [id, question, type]
+      properties:
+        id:
+          type: string
+        question:
+          type: string
+        type:
+          type: string
+          enum: [text, choice, multiChoice]
+        options:
+          type: array
+          items:
+            type: string
+        placeholder:
+          type: string
+
+    QuestionnaireInput:
+      type: object
+      required: [answers]
+      properties:
+        answers:
+          type: object
+          additionalProperties: true
+        additionalInstructions:
+          type: ["string", "null"]
+
+    QuestionnaireResult:
+      type: object
+      required: [needsMoreInfo, followUpQuestions, ready]
+      properties:
+        needsMoreInfo:
+          type: boolean
+        followUpQuestions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Question"
+        ready:
+          type: boolean
+        message:
+          type: ["string", "null"]
+
+    EditInput:
+      type: object
+      required: [instructions]
+      properties:
+        instructions:
+          type: string
+        uploadedImageUrls:
+          type: array
+          items:
+            type: string
+
+    GeneratedNotes:
+      type: object
+      required: [sessionId, pages]
+      properties:
+        sessionId:
+          type: string
+        pages:
+          type: array
+          items:
+            $ref: "#/components/schemas/NotePage"
+        uploadedImageUrls:
+          type: array
+          items:
+            type: string
+
+    NotePage:
+      type: object
+      required: [id, type, title]
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum: [cover, section, content, qa, reflection]
+        title:
+          type: string
+        subtitle:
+          type: ["string", "null"]
+        band:
+          type: ["string", "null"]
+        eventName:
+          type: ["string", "null"]
+        eventDate:
+          type: ["string", "null"]
+        sections:
+          type: array
+          items:
+            $ref: "#/components/schemas/NoteSection"
+        quote:
+          type: ["string", "null"]
+        quoteSource:
+          type: ["string", "null"]
+        imageUrl:
+          type: ["string", "null"]
+        questions:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReflectionQuestion"
+
+    NoteSection:
+      type: object
+      required: [title]
+      properties:
+        title:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/NoteItem"
+        subsections:
+          type: array
+          items:
+            $ref: "#/components/schemas/NoteSubsection"
+
+    NoteSubsection:
+      type: object
+      required: [title]
+      properties:
+        title:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/NoteItem"
+
+    NoteItem:
+      type: object
+      required: [t]
+      properties:
+        t:
+          type: string
+        n:
+          type: ["string", "null"]
+
+    ReflectionQuestion:
+      type: object
+      required: [q]
+      properties:
+        q:
+          type: string
+
+    ErrorResponse:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string

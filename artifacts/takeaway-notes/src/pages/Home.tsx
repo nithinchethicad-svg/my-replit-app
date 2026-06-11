@@ -78,7 +78,7 @@ export default function Home() {
         <div style={{ position: "absolute", bottom: 40, left: 40, width: 56, height: 56, borderBottom: "3px solid #C89B3C", borderLeft: "3px solid #C89B3C" }} />
         <div style={{ position: "absolute", bottom: 40, right: 40, width: 56, height: 56, borderBottom: "3px solid #C89B3C", borderRight: "3px solid #C89B3C" }} />
         <div style={{ width: "78%", marginBottom: 32 }}>
-          <img src={IMG("image35.png")} alt="Awkward group scene" style={{ width: "100%", objectFit: "contain", display: "block" }} />
+          <img src={IMG("title.png")} alt="Awkward group scene" style={{ width: "100%", objectFit: "contain", display: "block" }} />
         </div>
         <div style={{ marginBottom: 8 }}>
           <div className="display-title" style={{ fontSize: 52 }}>Good News,</div>

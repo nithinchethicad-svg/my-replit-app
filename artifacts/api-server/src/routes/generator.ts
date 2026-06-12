@@ -53,57 +53,107 @@ async function extractPptx(buffer: Buffer): Promise<string> {
 const INITIAL_QUESTIONS = [
   {
     id: "event_name",
-    question: "What is the name of the event or session?",
+    question: "What is the name of this event or session?",
     type: "text",
-    placeholder: "e.g. Freedom Yuva Youth Conference"
+    placeholder: "e.g. Q3 Sales Kickoff, Staff Training Day, Youth Leadership Workshop"
   },
   {
     id: "event_date",
-    question: "What is the date of the event?",
+    question: "When is it taking place?",
     type: "text",
     placeholder: "e.g. 14 June 2026"
   },
   {
-    id: "audience",
-    question: "Who is the target audience for these takeaway notes?",
+    id: "session_setting",
+    question: "What type of setting or context is this for?",
     type: "choice",
-    options: ["Youth / Teenagers", "Young Adults (18-30)", "General Church", "Professional / Corporate", "Mixed / All Ages"]
+    options: [
+      "School / Academic",
+      "Office / Workplace",
+      "Business Meeting",
+      "Financial / Investment",
+      "Church / Ministry",
+      "Workshop / Training",
+      "Conference / Summit",
+      "Community / Social",
+      "Other"
+    ]
+  },
+  {
+    id: "audience",
+    question: "Who is the primary audience?",
+    type: "choice",
+    options: [
+      "Students / Teenagers",
+      "Young Adults (18–30)",
+      "Working Professionals",
+      "Senior Professionals / Executives",
+      "General Public / Mixed Ages",
+      "Leadership / Management"
+    ]
   },
   {
     id: "tone",
     question: "What tone should the takeaway notes have?",
     type: "choice",
-    options: ["Warm & Encouraging", "Formal & Professional", "Fun & Energetic", "Devotional & Reflective", "Educational & Informative"]
+    options: [
+      "Warm & Encouraging",
+      "Formal & Professional",
+      "Fun & Energetic",
+      "Reflective & Thoughtful",
+      "Educational & Informative",
+      "Motivational & Inspiring"
+    ]
   },
   {
     id: "doc_sections",
-    question: "Which sections should the takeaway notes include?",
+    question: "Which sections should the document include?",
     type: "multiChoice",
-    options: ["Key Points / Do's & Don'ts", "Discussion Questions", "Reflection Prompts", "Scripture / Quotes", "Action Steps", "Summary"]
+    options: [
+      "Key Points / Takeaways",
+      "Do's & Don'ts",
+      "Discussion Questions",
+      "Reflection Prompts",
+      "Quotes & References",
+      "Action Steps",
+      "Summary / Recap"
+    ]
   },
   {
     id: "length",
     question: "How detailed should the takeaway notes be?",
     type: "choice",
-    options: ["Brief (2-3 pages)", "Moderate (4-6 pages)", "Comprehensive (7+ pages)"]
+    options: [
+      "Brief (2–3 pages)",
+      "Moderate (4–6 pages)",
+      "Comprehensive (7+ pages)"
+    ]
+  },
+  {
+    id: "color_scheme",
+    question: "What colour scheme should the document use?",
+    type: "choice",
+    options: [
+      "Similar to PPT — match my presentation colours",
+      "Blue & White — clean, professional",
+      "Earth Tones — warm, grounded",
+      "Dark & Bold — high contrast",
+      "Soft & Pastel — light, friendly",
+      "Green & Gold — premium, sophisticated",
+      "Monochrome — classic, minimal"
+    ]
   },
   {
     id: "branding",
-    question: "What is the presenter's name or organization to include on the cover?",
+    question: "Who or what should appear on the cover? (presenter name, organisation, etc.)",
     type: "text",
-    placeholder: "e.g. Pastor John / Freedom Church"
-  },
-  {
-    id: "design_style",
-    question: "What visual style should the document have?",
-    type: "choice",
-    options: ["Clean & Minimal", "Bold & Modern", "Warm & Inviting", "Classic & Elegant"]
+    placeholder: "e.g. Jane Smith / Acme Corp / Freedom Church"
   },
   {
     id: "additional",
-    question: "Is there anything specific you want to highlight or emphasize?",
+    question: "Anything specific you want highlighted or emphasised?",
     type: "text",
-    placeholder: "e.g. Focus on the practical application section, include the main scripture verse prominently"
+    placeholder: "e.g. Focus on the action steps section, include the main statistic prominently"
   }
 ];
 
@@ -221,44 +271,66 @@ router.post("/sessions/:sessionId/questionnaire", async (req, res) => {
   const mergedAnswers = { ...(session.answers as Record<string, unknown> || {}), ...answers };
   if (additionalInstructions) mergedAnswers["_additionalInstructions"] = additionalInstructions;
 
-  // Ask AI if we have enough information
+  const sessionSetting = String(mergedAnswers.session_setting ?? "General");
   const answerSummary = Object.entries(mergedAnswers)
     .map(([k, v]) => `${k}: ${JSON.stringify(v)}`)
     .join("\n");
 
-  const checkCompletion = await openai.chat.completions.create({
-    model: "gpt-4o-mini",
-    max_tokens: 500,
-    messages: [
-      {
-        role: "system",
-        content: `You are evaluating whether we have sufficient information to generate professional takeaway notes for a presentation. 
-Return ONLY valid JSON: { "ready": boolean, "missingInfo": string[] }
-If ready is false, list 1-2 specific pieces of missing info that would significantly improve the output.
-Consider ready=true if we have: event name, audience type, tone preference, and key sections to include.`
-      },
-      {
-        role: "user",
-        content: `Answers collected so far:\n${answerSummary}`
-      }
-    ]
-  });
-
   let ready = true;
   let followUpQuestions: typeof INITIAL_QUESTIONS = [];
 
+  // Ask AI if we have enough information — fail-open so any API error (429, network, etc.) still lets the user proceed
   try {
-    const parsed = JSON.parse(checkCompletion.choices[0].message.content ?? "{}");
+    const checkCompletion = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      max_tokens: 600,
+      messages: [
+        {
+          role: "system",
+          content: `You are evaluating whether we have sufficient information to generate professional takeaway notes.
+
+Session setting: ${sessionSetting}
+
+Based on this setting, decide if 1–2 targeted follow-up questions would meaningfully improve the document.
+Context-specific follow-up hints by setting:
+- School/Academic → subject name, grade level, learning objective
+- Business Meeting → company/industry, meeting objective, key decision
+- Financial/Investment → product/service type, key metric or outcome
+- Church/Ministry → sermon theme, scripture text, spiritual goal
+- Workshop/Training → skill being taught, expected deliverable
+- Conference/Summit → industry theme, speaker or keynote topic
+- Office/Workplace → department, project name, key stakeholder
+- Community/Social → event purpose, community need being addressed
+
+Return ONLY valid JSON (no markdown):
+{
+  "ready": boolean,
+  "followUpQuestions": [
+    { "id": "fq_0", "question": "...", "type": "text", "placeholder": "..." }
+  ]
+}
+
+Set ready=true and return empty followUpQuestions if we already have: event name, session setting, audience, tone, and at least one section selected.
+Keep follow-ups short, specific to the setting, and no more than 2 questions.`
+        },
+        {
+          role: "user",
+          content: `Answers collected so far:\n${answerSummary}`
+        }
+      ]
+    });
+
+    const raw = checkCompletion.choices[0].message.content ?? "{}";
+    const cleaned = raw.replace(/^```(?:json)?\n?/i, "").replace(/\n?```$/i, "").trim();
+    const parsed = JSON.parse(cleaned);
     ready = parsed.ready ?? true;
-    if (!ready && parsed.missingInfo?.length) {
-      followUpQuestions = parsed.missingInfo.map((info: string, i: number) => ({
-        id: `followup_${i}`,
-        question: info,
-        type: "text" as const,
-        placeholder: "Please provide more details..."
-      }));
+    if (!ready && Array.isArray(parsed.followUpQuestions) && parsed.followUpQuestions.length > 0) {
+      followUpQuestions = parsed.followUpQuestions;
+    } else {
+      ready = true; // if no follow-ups generated, proceed anyway
     }
-  } catch {
+  } catch (err) {
+    req.log.warn({ err }, "AI completeness check failed — defaulting to ready=true");
     ready = true;
   }
 
@@ -287,7 +359,7 @@ router.post("/sessions/:sessionId/generate", async (req, res) => {
   const answers = session.answers as Record<string, unknown> || {};
   const content = session.extractedContent ?? "";
 
-  const prompt = `You are a professional document designer creating takeaway notes for a presentation.
+  const prompt = `You are a professional document designer creating takeaway notes for a presentation or session.
 
 PRESENTATION CONTENT:
 ${content.slice(0, 8000)}
@@ -295,14 +367,22 @@ ${content.slice(0, 8000)}
 USER PREFERENCES:
 - Event Name: ${answers.event_name ?? "Presentation"}
 - Event Date: ${answers.event_date ?? ""}
+- Session Setting: ${answers.session_setting ?? "General"}
 - Target Audience: ${answers.audience ?? "General"}
 - Tone: ${answers.tone ?? "Warm & Encouraging"}
 - Sections to include: ${JSON.stringify(answers.doc_sections ?? [])}
 - Length: ${answers.length ?? "Moderate (4-6 pages)"}
-- Presenter/Organization: ${answers.branding ?? ""}
-- Visual Style: ${answers.design_style ?? "Clean & Minimal"}
+- Colour Scheme: ${answers.color_scheme ?? "Blue & White — clean, professional"}
+- Presenter/Organisation: ${answers.branding ?? ""}
 - Special emphasis: ${answers.additional ?? ""}
 - Additional instructions: ${answers._additionalInstructions ?? ""}
+
+Tailor the content vocabulary and framing to the session setting. For example:
+- School/Academic → use educational language, reference learning objectives
+- Business Meeting → use professional/corporate language, reference actionable outcomes
+- Financial/Investment → use precise financial language, reference metrics and decisions
+- Church/Ministry → use spiritual/faith language, reference scripture or values
+- Workshop/Training → use practical/skills language, reference exercises and deliverables
 
 Generate a structured takeaway notes document as a JSON array of pages. Each page should be engaging, well-organized, and appropriate for the audience.
 

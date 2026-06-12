@@ -25,7 +25,25 @@ const geminiPro = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
 // ─── retry helper ────────────────────────────────────────────────────────────
 
-async function geminiGenerate(prompt: string, maxRetries = 4): Promise<string> {
+function parseRetryDelaySecs(err: unknown): number | null {
+  try {
+    const msg = (err as { message?: string })?.message ?? "";
+    // Gemini error body contains: "Please retry in 42s."
+    const m = msg.match(/retry in (\d+(?:\.\d+)?)s/i);
+    if (m) return Math.ceil(parseFloat(m[1]));
+    // Also check errorDetails array
+    const details = (err as { errorDetails?: { "@type"?: string; retryDelay?: string }[] })?.errorDetails ?? [];
+    for (const d of details) {
+      if (d["@type"]?.includes("RetryInfo") && d.retryDelay) {
+        const secs = parseInt(d.retryDelay, 10);
+        if (!isNaN(secs)) return secs;
+      }
+    }
+  } catch { /* ignore */ }
+  return null;
+}
+
+async function geminiGenerate(prompt: string, maxRetries = 5): Promise<string> {
   let lastErr: unknown;
   for (let attempt = 0; attempt < maxRetries; attempt++) {
     try {
@@ -37,8 +55,13 @@ async function geminiGenerate(prompt: string, maxRetries = 4): Promise<string> {
       const message = (err as { message?: string })?.message ?? "";
       const is429 = status === 429 || message.includes("429") || message.toLowerCase().includes("toomanyrequests");
       if (!is429) throw err;
-      const delay = Math.min(2000 * 2 ** attempt, 30000); // 2s, 4s, 8s, 16s
-      await new Promise((r) => setTimeout(r, delay));
+
+      const suggestedSecs = parseRetryDelaySecs(err);
+      // Use Gemini's suggested delay; fall back to exponential backoff; cap at 90s
+      const delaySecs = suggestedSecs ?? Math.min(4 * 2 ** attempt, 60);
+      const delayMs = delaySecs * 1000;
+      console.warn(`[gemini] 429 rate-limit on attempt ${attempt + 1}/${maxRetries} — waiting ${delaySecs}s before retry`);
+      await new Promise((r) => setTimeout(r, delayMs));
     }
   }
   throw lastErr;

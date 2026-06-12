@@ -3,6 +3,7 @@ import { useLocation, useParams } from "wouter";
 import { useGenerateNotes } from "@workspace/api-client-react";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { debugLog } from "@/lib/debug";
 
 export default function Generating() {
   const { sessionId } = useParams<{ sessionId: string }>();
@@ -16,11 +17,16 @@ export default function Generating() {
     if (!sessionId || hasTriggered.current) return;
     hasTriggered.current = true;
 
+    debugLog.info(`Starting generation for session ${sessionId}`);
+
     generateMutation.mutate({ sessionId }, {
       onSuccess: () => {
+        debugLog.success("Notes generated successfully — navigating to view");
         setLocation(`/view/${sessionId}`);
       },
       onError: (err) => {
+        const msg = err instanceof Error ? err.message : String(err);
+        debugLog.error("Generation failed", msg);
         console.error(err);
         toast({
           title: "Generation failed",

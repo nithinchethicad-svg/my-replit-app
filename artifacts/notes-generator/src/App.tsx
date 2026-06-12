@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
+import DebugPanel from "./components/DebugPanel";
 
 import Upload from "./pages/upload";
 import Questionnaire from "./pages/questionnaire";
@@ -31,6 +32,7 @@ function App() {
           <Router />
         </WouterRouter>
         <Toaster />
+        <DebugPanel />
       </TooltipProvider>
     </QueryClientProvider>
   );

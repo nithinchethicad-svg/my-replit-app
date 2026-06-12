@@ -9,6 +9,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Loader2, ChevronRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { debugLog } from "@/lib/debug";
 
 interface Question {
   id: string;
@@ -55,6 +56,8 @@ export default function Questionnaire() {
   const handleSubmit = async () => {
     if (!sessionId) return;
 
+    debugLog.info(`Submitting questionnaire for session ${sessionId}`, `answers: ${JSON.stringify(Object.keys(answers))}`);
+
     submitMutation.mutate(
       {
         sessionId,
@@ -66,10 +69,12 @@ export default function Questionnaire() {
       {
         onSuccess: (result) => {
           if (result.ready) {
+            debugLog.success("Questionnaire accepted — proceeding to generate");
             setLocation(`/generating/${sessionId}`);
           } else if (result.needsMoreInfo) {
             const fqs = (result.followUpQuestions as Question[] | undefined) ?? [];
             if (fqs.length > 0) {
+              debugLog.info(`AI requested ${fqs.length} follow-up question(s)`, JSON.stringify(fqs.map(q => q.id)));
               setExtraQuestions(fqs);
               setSubmitted(true);
               toast({
@@ -78,12 +83,14 @@ export default function Questionnaire() {
               });
               window.scrollTo({ top: 0, behavior: "smooth" });
             } else {
-              // No follow-ups returned — just proceed to generate
+              debugLog.info("No follow-ups — proceeding to generate");
               setLocation(`/generating/${sessionId}`);
             }
           }
         },
-        onError: () => {
+        onError: (err) => {
+          const msg = err instanceof Error ? err.message : String(err);
+          debugLog.error("Questionnaire submission failed", msg);
           toast({
             title: "Submission failed",
             description: "There was an error saving your answers.",

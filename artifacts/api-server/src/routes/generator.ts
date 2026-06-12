@@ -112,13 +112,13 @@ const INITIAL_QUESTIONS = [
 router.post(
   "/upload",
   upload.fields([
-    { name: "speakerNotes", maxCount: 1 },
+    { name: "notes", maxCount: 1 },
     { name: "presentation", maxCount: 1 }
   ]),
   async (req, res) => {
     try {
       const files = req.files as Record<string, Express.Multer.File[]> | undefined;
-      const speakerNotesFile = files?.speakerNotes?.[0];
+      const speakerNotesFile = files?.notes?.[0];
       const presentationFile = files?.presentation?.[0];
 
       if (!speakerNotesFile && !presentationFile) {

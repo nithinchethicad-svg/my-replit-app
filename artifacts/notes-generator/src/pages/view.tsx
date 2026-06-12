@@ -7,7 +7,7 @@ import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerDescription, Dr
 import { Loader2, Download, Pencil, ImagePlus, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
-import { NotePage, NotePageType, NoteSection, NoteItem } from "@workspace/api-client-react/src/generated/api.schemas";
+import { NotePage, NoteSection, NoteItem } from "@workspace/api-client-react";
 
 export default function View() {
   const { sessionId } = useParams<{ sessionId: string }>();
@@ -169,13 +169,13 @@ function PageCard({ page, index }: { page: NotePage, index: number }) {
           </div>
           
           <div className="flex-1 space-y-8">
-            {page.sections?.map((section, idx) => (
+            {page.sections?.map((section: NoteSection, idx: number) => (
               <div key={idx} className="space-y-3">
                 {section.title && <h3 className="text-xl font-medium text-foreground mb-3">{section.title}</h3>}
                 
                 {section.items && section.items.length > 0 && (
                   <ul className="space-y-4 list-none pl-0">
-                    {section.items.map((item, itemIdx) => (
+                    {section.items.map((item: NoteItem, itemIdx: number) => (
                       <li key={itemIdx} className="flex gap-4">
                         <span className="text-primary mt-1 opacity-70">•</span>
                         <div>
@@ -214,7 +214,7 @@ function PageCard({ page, index }: { page: NotePage, index: number }) {
           </div>
           
           <div className="flex-1 space-y-12 mt-4">
-            {page.questions?.map((q, idx) => (
+            {page.questions?.map((q: { q: string }, idx: number) => (
               <div key={idx} className="space-y-6">
                 <div className="text-xl font-medium text-foreground leading-snug">{q.q}</div>
                 <div className="w-full border-b border-dashed border-border/60"></div>

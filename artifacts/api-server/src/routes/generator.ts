@@ -23,6 +23,27 @@ const imageUpload = multer({ storage: multer.memoryStorage(), limits: { fileSize
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY ?? "");
 const geminiPro = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
+// ─── retry helper ────────────────────────────────────────────────────────────
+
+async function geminiGenerate(prompt: string, maxRetries = 4): Promise<string> {
+  let lastErr: unknown;
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    try {
+      const result = await geminiPro.generateContent(prompt);
+      return result.response.text() ?? "";
+    } catch (err: unknown) {
+      lastErr = err;
+      const status = (err as { status?: number })?.status;
+      const message = (err as { message?: string })?.message ?? "";
+      const is429 = status === 429 || message.includes("429") || message.toLowerCase().includes("toomanyrequests");
+      if (!is429) throw err;
+      const delay = Math.min(2000 * 2 ** attempt, 30000); // 2s, 4s, 8s, 16s
+      await new Promise((r) => setTimeout(r, delay));
+    }
+  }
+  throw lastErr;
+}
+
 // ─── helpers ────────────────────────────────────────────────────────────────
 
 async function extractPdf(buffer: Buffer): Promise<string> {
@@ -282,7 +303,7 @@ router.post("/sessions/:sessionId/questionnaire", async (req, res) => {
 
   // Ask AI if we have enough information — fail-open so any API error (429, network, etc.) still lets the user proceed
   try {
-    const checkResult = await geminiPro.generateContent(`You are evaluating whether we have sufficient information to generate professional takeaway notes.
+    const raw = await geminiGenerate(`You are evaluating whether we have sufficient information to generate professional takeaway notes.
 
 Session setting: ${sessionSetting}
 
@@ -311,7 +332,6 @@ Keep follow-ups short, specific to the setting, and no more than 2 questions.
 Answers collected so far:
 ${answerSummary}`);
 
-    const raw = checkResult.response.text() ?? "{}";
     const cleaned = raw.replace(/^```(?:json)?\n?/i, "").replace(/\n?```$/i, "").trim();
     const parsed = JSON.parse(cleaned);
     ready = parsed.ready ?? true;
@@ -443,9 +463,7 @@ Guidelines:
 - Aim for ${answers.length === "Brief (2-3 pages)" ? "2-3" : answers.length === "Comprehensive (7+ pages)" ? "7-9" : "4-6"} pages total`;
 
   try {
-    const result = await geminiPro.generateContent(prompt);
-
-    let pagesJson = result.response.text() ?? "[]";
+    let pagesJson = await geminiGenerate(prompt);
     // strip markdown code fences if present
     pagesJson = pagesJson.replace(/^```(?:json)?\n?/i, "").replace(/\n?```$/i, "").trim();
 
@@ -520,9 +538,7 @@ Apply the requested changes to the document pages. Maintain the same JSON struct
 Return ONLY the updated pages as a valid JSON array (no markdown, no code blocks).`;
 
     try {
-      const editResult = await geminiPro.generateContent(prompt);
-
-      let pagesJson = editResult.response.text() ?? "[]";
+      let pagesJson = await geminiGenerate(prompt);
       pagesJson = pagesJson.replace(/^```(?:json)?\n?/i, "").replace(/\n?```$/i, "").trim();
 
       const pages = JSON.parse(pagesJson);

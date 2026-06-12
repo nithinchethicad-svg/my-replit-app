@@ -3,7 +3,7 @@ import multer from "multer";
 import { randomUUID } from "crypto";
 import { db, sessionsTable } from "@workspace/db";
 import { eq } from "drizzle-orm";
-import OpenAI from "openai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 type PdfParseFn = (dataBuffer: Buffer) => Promise<{ text: string }>;
 let _pdfParse: PdfParseFn | null = null;
 async function getPdfParse(): Promise<PdfParseFn> {
@@ -20,7 +20,8 @@ const router = Router();
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 50 * 1024 * 1024 } });
 const imageUpload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 20 * 1024 * 1024 } });
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY ?? "");
+const geminiPro = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
 // ─── helpers ────────────────────────────────────────────────────────────────
 
@@ -281,13 +282,7 @@ router.post("/sessions/:sessionId/questionnaire", async (req, res) => {
 
   // Ask AI if we have enough information — fail-open so any API error (429, network, etc.) still lets the user proceed
   try {
-    const checkCompletion = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
-      max_tokens: 600,
-      messages: [
-        {
-          role: "system",
-          content: `You are evaluating whether we have sufficient information to generate professional takeaway notes.
+    const checkResult = await geminiPro.generateContent(`You are evaluating whether we have sufficient information to generate professional takeaway notes.
 
 Session setting: ${sessionSetting}
 
@@ -311,16 +306,12 @@ Return ONLY valid JSON (no markdown):
 }
 
 Set ready=true and return empty followUpQuestions if we already have: event name, session setting, audience, tone, and at least one section selected.
-Keep follow-ups short, specific to the setting, and no more than 2 questions.`
-        },
-        {
-          role: "user",
-          content: `Answers collected so far:\n${answerSummary}`
-        }
-      ]
-    });
+Keep follow-ups short, specific to the setting, and no more than 2 questions.
 
-    const raw = checkCompletion.choices[0].message.content ?? "{}";
+Answers collected so far:
+${answerSummary}`);
+
+    const raw = checkResult.response.text() ?? "{}";
     const cleaned = raw.replace(/^```(?:json)?\n?/i, "").replace(/\n?```$/i, "").trim();
     const parsed = JSON.parse(cleaned);
     ready = parsed.ready ?? true;
@@ -452,13 +443,9 @@ Guidelines:
 - Aim for ${answers.length === "Brief (2-3 pages)" ? "2-3" : answers.length === "Comprehensive (7+ pages)" ? "7-9" : "4-6"} pages total`;
 
   try {
-    const completion = await openai.chat.completions.create({
-      model: "gpt-4o",
-      max_tokens: 8192,
-      messages: [{ role: "user", content: prompt }]
-    });
+    const result = await geminiPro.generateContent(prompt);
 
-    let pagesJson = completion.choices[0].message.content ?? "[]";
+    let pagesJson = result.response.text() ?? "[]";
     // strip markdown code fences if present
     pagesJson = pagesJson.replace(/^```(?:json)?\n?/i, "").replace(/\n?```$/i, "").trim();
 
@@ -533,13 +520,9 @@ Apply the requested changes to the document pages. Maintain the same JSON struct
 Return ONLY the updated pages as a valid JSON array (no markdown, no code blocks).`;
 
     try {
-      const completion = await openai.chat.completions.create({
-        model: "gpt-4o",
-        max_tokens: 8192,
-        messages: [{ role: "user", content: prompt }]
-      });
+      const editResult = await geminiPro.generateContent(prompt);
 
-      let pagesJson = completion.choices[0].message.content ?? "[]";
+      let pagesJson = editResult.response.text() ?? "[]";
       pagesJson = pagesJson.replace(/^```(?:json)?\n?/i, "").replace(/\n?```$/i, "").trim();
 
       const pages = JSON.parse(pagesJson);

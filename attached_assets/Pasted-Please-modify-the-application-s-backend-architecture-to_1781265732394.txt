@@ -1,0 +1,23 @@
+Please modify the application's backend architecture to prevent HTTP 429 (Resource Exhausted / Too Many Requests) errors from the Gemini API. I want to strictly adhere to the Google AI Studio Free Tier rate limits for the project without upgrading to a paid tier. 
+
+Please assume we are using a baseline free model like Gemini 2.5 Flash, which is restricted to the following maximum limits:
+- RPM (Requests Per Minute): Maximum 10 requests per minute.
+- TPM (Tokens Per Minute): Maximum 250,000 tokens per minute (includes both prompt/context input and model generation output).
+- RPD (Requests Per Day): Maximum 250 requests per day.
+
+To keep the application safely below these quotas while keeping the codebase lag-tolerant, please implement the following structural and logic changes across the app without breaking existing features:
+
+1. Mandatory Request Throttling:
+Add a centralized timing delay or cooldown right after every single Gemini API execution block. Set this delay to a mandatory 6 seconds per call. This mathematically locks the app to a maximum of 10 Requests Per Minute (RPM), preventing rapid-fire submission bursts.
+
+2. Application-Wide Traffic Queueing (Thread Safety):
+If multiple functions, endpoints, or concurrent users can trigger an API request at the same time, individual timing delays will fail. Implement a synchronized global background queue, worker, or mutex lock structure. Ensure that all Gemini API interactions across the entire Replit project pass through this single pipeline sequentially—handling exactly one call at a time.
+
+3. Token Volume Constraints (TPM Safeguard):
+- Set a explicit 'max_output_tokens' limit within the generation configuration block of the API calls (e.g., limit it to 200–500 tokens depending on what our UI needs).
+- Implement a safety check on the input string to truncate or slice excessively large text prompts or historical context structures before they are compiled and transmitted to the API.
+
+4. Graceful Error Fallbacks:
+If a 429 error still bypasses our blocks due to temporary regional server strain, wrap the request layer in a robust try/except fallback. Instead of crashing or blanking out, make the application display a clear, user-friendly status message to the frontend UI indicating that the service is busy and will auto-retry shortly.
+
+Please review the existing codebase, identify all files where the Gemini API client is initialized or invoked, and apply these structural guardrails directly. Do not change our core app functionality, just the pacing of the data flow.

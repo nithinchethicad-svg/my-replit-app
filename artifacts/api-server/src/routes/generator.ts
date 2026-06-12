@@ -20,18 +20,95 @@ const router = Router();
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 50 * 1024 * 1024 } });
 const imageUpload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 20 * 1024 * 1024 } });
 
+// ─── Gemini client — two configs: fast check vs full generation ───────────────
+
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY ?? "");
-const geminiPro = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
-// ─── retry helper ────────────────────────────────────────────────────────────
+// Completeness check: needs very little output
+const geminiCheck = genAI.getGenerativeModel({
+  model: "gemini-2.5-flash",
+  generationConfig: { maxOutputTokens: 500 },
+});
 
-function parseRetryDelaySecs(err: unknown): number | null {
+// Full document generation / edit: needs substantial output
+const geminiGen = genAI.getGenerativeModel({
+  model: "gemini-2.5-flash",
+  generationConfig: { maxOutputTokens: 8192 },
+});
+
+// ─── Mandatory 6-second cooldown between calls (caps RPM ≤ 10) ───────────────
+
+const COOLDOWN_MS = 6_000;
+const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
+
+// ─── Global sequential queue — one Gemini call at a time ─────────────────────
+
+class GeminiQueue {
+  private busy = false;
+  private readonly tasks: Array<() => void> = [];
+
+  enqueue<T>(fn: () => Promise<T>): Promise<T> {
+    return new Promise<T>((resolve, reject) => {
+      this.tasks.push(async () => {
+        try {
+          resolve(await fn());
+        } catch (e) {
+          reject(e);
+        } finally {
+          await sleep(COOLDOWN_MS);
+          this.busy = false;
+          this.drain();
+        }
+      });
+      this.drain();
+    });
+  }
+
+  private drain() {
+    if (this.busy || this.tasks.length === 0) return;
+    this.busy = true;
+    const next = this.tasks.shift()!;
+    next();
+  }
+
+  get queueLength() { return this.tasks.length; }
+}
+
+const geminiQueue = new GeminiQueue();
+
+// ─── Input truncation — keeps prompts well under 250k TPM limit ───────────────
+
+const MAX_CONTENT_CHARS = 12_000;  // ~3k tokens — extracted file text
+const MAX_PROMPT_CHARS  = 40_000;  // ~10k tokens — full assembled prompt
+
+function truncateContent(text: string): string {
+  if (text.length <= MAX_CONTENT_CHARS) return text;
+  return text.slice(0, MAX_CONTENT_CHARS) + "\n[... content truncated to stay within token limits ...]";
+}
+
+function truncatePrompt(text: string): string {
+  if (text.length <= MAX_PROMPT_CHARS) return text;
+  return text.slice(0, MAX_PROMPT_CHARS) + "\n[... prompt truncated ...]";
+}
+
+// ─── 429 detection & retry-delay parsing ─────────────────────────────────────
+
+function isRateLimit(err: unknown): boolean {
+  const status = (err as { status?: number })?.status;
+  const msg = (err as { message?: string })?.message ?? "";
+  return (
+    status === 429 ||
+    msg.includes("429") ||
+    msg.toLowerCase().includes("resource exhausted") ||
+    msg.toLowerCase().includes("toomanyrequests")
+  );
+}
+
+function getRetryAfterSecs(err: unknown): number {
   try {
     const msg = (err as { message?: string })?.message ?? "";
-    // Gemini error body contains: "Please retry in 42s."
     const m = msg.match(/retry in (\d+(?:\.\d+)?)s/i);
     if (m) return Math.ceil(parseFloat(m[1]));
-    // Also check errorDetails array
     const details = (err as { errorDetails?: { "@type"?: string; retryDelay?: string }[] })?.errorDetails ?? [];
     for (const d of details) {
       if (d["@type"]?.includes("RetryInfo") && d.retryDelay) {
@@ -40,31 +117,40 @@ function parseRetryDelaySecs(err: unknown): number | null {
       }
     }
   } catch { /* ignore */ }
-  return null;
+  return 60;
 }
 
-async function geminiGenerate(prompt: string, maxRetries = 5): Promise<string> {
-  let lastErr: unknown;
-  for (let attempt = 0; attempt < maxRetries; attempt++) {
-    try {
-      const result = await geminiPro.generateContent(prompt);
-      return result.response.text() ?? "";
-    } catch (err: unknown) {
-      lastErr = err;
-      const status = (err as { status?: number })?.status;
-      const message = (err as { message?: string })?.message ?? "";
-      const is429 = status === 429 || message.includes("429") || message.toLowerCase().includes("toomanyrequests");
-      if (!is429) throw err;
-
-      const suggestedSecs = parseRetryDelaySecs(err);
-      // Use Gemini's suggested delay; fall back to exponential backoff; cap at 90s
-      const delaySecs = suggestedSecs ?? Math.min(4 * 2 ** attempt, 60);
-      const delayMs = delaySecs * 1000;
-      console.warn(`[gemini] 429 rate-limit on attempt ${attempt + 1}/${maxRetries} — waiting ${delaySecs}s before retry`);
-      await new Promise((r) => setTimeout(r, delayMs));
-    }
+// Special error class the route handlers can detect
+class RateLimitedError extends Error {
+  constructor(public readonly retryAfterSecs: number) {
+    super(`RATE_LIMITED:${retryAfterSecs}`);
   }
-  throw lastErr;
+}
+
+// ─── geminiCall — the single entry point for all Gemini requests ──────────────
+
+async function geminiCall(
+  model: ReturnType<typeof genAI.getGenerativeModel>,
+  rawPrompt: string,
+  label: string
+): Promise<string> {
+  const prompt = truncatePrompt(rawPrompt);
+  return geminiQueue.enqueue(async () => {
+    console.log(`[gemini] START ${label} | prompt=${prompt.length} chars | queue=${geminiQueue.queueLength}`);
+    try {
+      const result = await model.generateContent(prompt);
+      console.log(`[gemini] OK    ${label}`);
+      return result.response.text() ?? "";
+    } catch (err) {
+      if (isRateLimit(err)) {
+        const secs = getRetryAfterSecs(err);
+        console.warn(`[gemini] 429   ${label} — retry suggested in ${secs}s`);
+        throw new RateLimitedError(secs);
+      }
+      console.error(`[gemini] ERR   ${label}`, err);
+      throw err;
+    }
+  });
 }
 
 // ─── helpers ────────────────────────────────────────────────────────────────
@@ -324,9 +410,10 @@ router.post("/sessions/:sessionId/questionnaire", async (req, res) => {
   let ready = true;
   let followUpQuestions: typeof INITIAL_QUESTIONS = [];
 
-  // Ask AI if we have enough information — fail-open so any API error (429, network, etc.) still lets the user proceed
+  // Ask AI if we have enough information — fail-open so any error still lets the user proceed
   try {
-    const raw = await geminiGenerate(`You are evaluating whether we have sufficient information to generate professional takeaway notes.
+    const safeAnswerSummary = answerSummary.slice(0, 2_000);
+    const raw = await geminiCall(geminiCheck, `You are evaluating whether we have sufficient information to generate professional takeaway notes.
 
 Session setting: ${sessionSetting}
 
@@ -353,7 +440,7 @@ Set ready=true and return empty followUpQuestions if we already have: event name
 Keep follow-ups short, specific to the setting, and no more than 2 questions.
 
 Answers collected so far:
-${answerSummary}`);
+${safeAnswerSummary}`, "completeness-check");
 
     const cleaned = raw.replace(/^```(?:json)?\n?/i, "").replace(/\n?```$/i, "").trim();
     const parsed = JSON.parse(cleaned);
@@ -391,12 +478,12 @@ router.post("/sessions/:sessionId/generate", async (req, res) => {
   }
 
   const answers = session.answers as Record<string, unknown> || {};
-  const content = session.extractedContent ?? "";
+  const content = truncateContent(session.extractedContent ?? "");
 
   const prompt = `You are a professional document designer creating takeaway notes for a presentation or session.
 
 PRESENTATION CONTENT:
-${content.slice(0, 8000)}
+${content}
 
 USER PREFERENCES:
 - Event Name: ${answers.event_name ?? "Presentation"}
@@ -486,12 +573,10 @@ Guidelines:
 - Aim for ${answers.length === "Brief (2-3 pages)" ? "2-3" : answers.length === "Comprehensive (7+ pages)" ? "7-9" : "4-6"} pages total`;
 
   try {
-    let pagesJson = await geminiGenerate(prompt);
-    // strip markdown code fences if present
+    let pagesJson = await geminiCall(geminiGen, prompt, "generate-notes");
     pagesJson = pagesJson.replace(/^```(?:json)?\n?/i, "").replace(/\n?```$/i, "").trim();
 
     const pages = JSON.parse(pagesJson);
-
     const notes = { pages };
 
     await db.update(sessionsTable)
@@ -504,6 +589,15 @@ Guidelines:
       uploadedImageUrls: (session.uploadedImageUrls as string[]) ?? []
     });
   } catch (err) {
+    if (err instanceof RateLimitedError) {
+      req.log.warn({ retryAfter: err.retryAfterSecs }, "Rate limited on generate — returning 503");
+      res.status(503).set("Retry-After", String(err.retryAfterSecs)).json({
+        error: "rate_limited",
+        message: "The AI service is busy right now. The app will auto-retry shortly.",
+        retryAfterSecs: err.retryAfterSecs,
+      });
+      return;
+    }
     req.log.error(err, "Error generating notes");
     res.status(500).json({ error: "Failed to generate notes" });
   }
@@ -545,12 +639,12 @@ router.post(
     const existingUrls = (session.uploadedImageUrls as string[]) ?? [];
     const allImageUrls = [...existingUrls, ...(req.body?.uploadedImageUrls ?? []), ...newImageRefs];
 
-    const currentPagesJson = JSON.stringify(existingNotes.pages, null, 2);
+    const currentPagesJson = truncatePrompt(JSON.stringify(existingNotes.pages, null, 2));
 
     const prompt = `You are editing a takeaway notes document based on user feedback.
 
 CURRENT DOCUMENT PAGES (JSON):
-${currentPagesJson.slice(0, 6000)}
+${currentPagesJson}
 
 USER EDIT INSTRUCTIONS:
 ${instructions}
@@ -561,7 +655,7 @@ Apply the requested changes to the document pages. Maintain the same JSON struct
 Return ONLY the updated pages as a valid JSON array (no markdown, no code blocks).`;
 
     try {
-      let pagesJson = await geminiGenerate(prompt);
+      let pagesJson = await geminiCall(geminiGen, prompt, "edit-notes");
       pagesJson = pagesJson.replace(/^```(?:json)?\n?/i, "").replace(/\n?```$/i, "").trim();
 
       const pages = JSON.parse(pagesJson);
@@ -577,6 +671,15 @@ Return ONLY the updated pages as a valid JSON array (no markdown, no code blocks
         uploadedImageUrls: allImageUrls
       });
     } catch (err) {
+      if (err instanceof RateLimitedError) {
+        req.log.warn({ retryAfter: err.retryAfterSecs }, "Rate limited on edit — returning 503");
+        res.status(503).set("Retry-After", String(err.retryAfterSecs)).json({
+          error: "rate_limited",
+          message: "The AI service is busy right now. Please try again in a moment.",
+          retryAfterSecs: err.retryAfterSecs,
+        });
+        return;
+      }
       req.log.error(err, "Error editing notes");
       res.status(500).json({ error: "Failed to edit notes" });
     }

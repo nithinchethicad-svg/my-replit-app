@@ -33,7 +33,7 @@ export const debugLog = {
   subscribe(fn: Listener) {
     listeners.add(fn);
     fn([...entries]);
-    return () => listeners.delete(fn);
+    return () => { listeners.delete(fn); };
   },
 };
 
